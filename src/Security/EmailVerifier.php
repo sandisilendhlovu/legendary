@@ -2,51 +2,40 @@
 
 namespace App\Security;
 
-use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Mailer\MailerInterface;
-use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
-use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
+use Symfony\Component\Uid\Uuid;
 
 class EmailVerifier
 {
     public function __construct(
-        private VerifyEmailHelperInterface $verifyEmailHelper,
         private MailerInterface $mailer,
-        private EntityManagerInterface $entityManager
-    ) {
-    }
+        private UrlGeneratorInterface $urlGenerator
+    ) {}
 
-    public function sendEmailConfirmation(string $verifyEmailRouteName, User $user, TemplatedEmail $email): void
+    public function sendEmailConfirmation(string $verifyRouteName, $user): void
     {
-        $signatureComponents = $this->verifyEmailHelper->generateSignature(
-            $verifyEmailRouteName,
-            (string) $user->getId(),
-            (string) $user->getEmail()
-        );
+        // Generate a unique token
+        $token = Uuid::v4()->toRfc4122();
 
-        $context = $email->getContext();
-        $context['signedUrl'] = $signatureComponents->getSignedUrl();
-        $context['expiresAtMessageKey'] = $signatureComponents->getExpirationMessageKey();
-        $context['expiresAtMessageData'] = $signatureComponents->getExpirationMessageData();
+        // Generate the verification URL
+        $verificationUrl = $this->urlGenerator->generate($verifyRouteName, [
+            'token' => $token,
+            'email' => $user->getEmail(),
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $email->context($context);
+        // Build the email
+        $email = (new Email())
+            ->from(new Address('noreply@sandycodes.co.za', 'Legendary Login System'))
+            ->to($user->getEmail())
+            ->subject('Please verify your email address')
+            ->html("<p>Hi {$user->getFirstName()},</p>
+                    <p>Thank you for registering your profile. Please verify your email by clicking the link below:</p>
+                    <p><a href='{$verificationUrl}'>Verify Email</a></p>");
 
+        // Send the email
         $this->mailer->send($email);
-    }
-
-    /**
-     * @throws VerifyEmailExceptionInterface
-     */
-    public function handleEmailConfirmation(Request $request, User $user): void
-    {
-        $this->verifyEmailHelper->validateEmailConfirmationFromRequest($request, (string) $user->getId(), (string) $user->getEmail());
-
-        $user->setIsVerified(true);
-
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
     }
 }
