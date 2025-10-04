@@ -18,12 +18,15 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
-    public function __construct(private EmailVerifier $emailVerifier)
+    public function __construct(
+        private EmailVerifier $emailVerifier, 
+        private EntityManagerInterface $entityManager
+        )
     {
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -41,8 +44,8 @@ class RegistrationController extends AbstractController
             $user->setUpdatedAt(new \DateTimeImmutable());
             $user->setIsActive(true);
 
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
 
  
 
@@ -68,22 +71,29 @@ class RegistrationController extends AbstractController
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        
+            $email = $request->query->get('email');
+            $token = $request->query->get('token');
 
-        // validate email confirmation link, sets User::isVerified=true and persists
-        try {
-            /** @var User $user */
-            $user = $this->getUser();
-            $this->emailVerifier->handleEmailConfirmation($request, $user);
-        } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
-
-            return $this->redirectToRoute('app_register');
-        }
-
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
-
-        return $this->redirectToRoute('app_register');
+            if (!$email || !$token) {
+            $this->addFlash('error', 'Invalid verification link.');
+            return $this->redirectToRoute('app_home');
     }
-}
+
+          // Look up user by email
+          $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+
+          if (!$user) {
+          $this->addFlash('error', 'No user found for this email.');
+          return $this->redirectToRoute('app_home');
+    }
+
+         // Mark as verified
+         $user->setIsVerified(true);
+         $this->entityManager->flush();
+
+        $this->addFlash('success', '✅ Your email address has been successfully verified.');
+        return $this->redirectToRoute('app_login');
+
+    }
+    }
