@@ -1,0 +1,50 @@
+/* === Legendary Project-wide Color Palette === */
+
+:root {
+  --color-background: #F4F8FA;
+  --color-primary: #0D74AC;
+  --color-primary-light: #37A1CE;
+  --color-dark: #091622;
+  --color-raspberry: #ba0c2f;
+}
+
+/* Page background */
+html, body {
+  background-color: var(--color-background) !important;
+}
+
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-dark) !important; /* #091622 */
+}
+
+/* Paragraph and body text */
+body, p, span, li {
+  color: var(--color-dark) !important;
+}
+
+/* Links */
+a {
+  color: var(--color-primary) !important; /* #0D74AC */
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-primary-light) !important; /* #37A1CE */
+  text-decoration: underline;
+}
+
+/* Primary buttons */
+.btn-primary {
+  background-color: var(--color-primary) !important;      /* #0D74AC */
+  border-color: var(--color-primary) !important;
+  color: #fff !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--color-primary-light) !important; /* #37A1CE */
+  border-color: var(--color-primary-light) !important;
+  color: #fff !important;
+}
