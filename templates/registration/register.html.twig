@@ -1,4 +1,6 @@
 {% extends 'base.html.twig' %}
+{% form_theme registrationForm 'bootstrap_5_layout.html.twig' %}
+
 
 {% block title %}Register{% endblock %}
 
@@ -6,6 +8,12 @@
     {% for flash_error in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
+
+    <div class="container py-5">
+    <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+    <div class="card shadow-sm">
+    <div class="card-body p-4">
 
     <h1>Register</h1>
 
@@ -19,6 +27,8 @@
             label: 'Password' }) }}
 
 <p style="font-size: 0.9rem; color: #555; margin: 15px 0;">
+            <strong> Terms and Conditions </strong>
+            <br />
             All Information on this site is <strong>Private, Confidential, and Proprietary.</strong>
             Do not share with external parties. Copyright © Afrihost 2025.
 </p>
@@ -27,4 +37,11 @@
 
         <button type="submit" class="btn btn-primary">Register</button>
     {{ form_end(registrationForm) }}
+
+         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
