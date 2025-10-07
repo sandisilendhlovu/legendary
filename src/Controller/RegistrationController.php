@@ -60,7 +60,7 @@ class RegistrationController extends AbstractController
 
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_verify_notice');
         }
 
         return $this->render('registration/register.html.twig', [
@@ -93,7 +93,7 @@ class RegistrationController extends AbstractController
          $this->entityManager->flush();
 
         $this->addFlash('success', '✅ Your email address has been successfully verified.');
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_login');
 
     }
     }

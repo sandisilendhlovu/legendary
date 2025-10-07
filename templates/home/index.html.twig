@@ -1,15 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Welcome{% endblock %}
+{% block title %}Welcome{% endblock %} 
 
 {% block body %}
+
 <div style="max-width: 600px; margin: 80px auto; text-align: center;">
-      <h1> Welcome back, {{ app.user.firstName ?? app.user.email }}!</h1>
-      <p> You’re now logged into Legendary! </p>
+{% if app.user %}
+<h1>Welcome back, {{ app.user.firstName ?? app.user.email }}!</h1>
+{% else %}
+<h1> Hello, Guest!</h1>
+{% endif %}
 
-     <a href="{{ path('app_logout') }}" class="btn btn-primary mt-3">
-      Logout
-      </a>
+<p> You’re now logged into Legendary! </p>
 
-  </div>
-{% endblock %}
+<a href="{{ path('app_logout') }}" class="btn btn-primary mt-3">
+ Logout
+ </a>
+
+</div>
+{% endblock %} 
