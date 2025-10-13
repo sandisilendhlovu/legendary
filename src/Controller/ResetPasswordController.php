@@ -12,6 +12,9 @@ use App\Form\ForgotPasswordRequestType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+
 
 
 final class ResetPasswordController extends AbstractController
@@ -25,7 +28,7 @@ final class ResetPasswordController extends AbstractController
     }
 
     #[Route('/forgot-password', name: 'app_forgot_password', methods: ['GET', 'POST'])]
-    public function forgotPassword(Request $request, EntityManagerInterface $entityManager): Response 
+    public function forgotPassword(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
 
 
@@ -53,13 +56,24 @@ if ($user) {
     $entityManager->persist($token);
     $entityManager->flush();
 
-    // DEV ONLY: Generate a temporary reset URL (to test flow)
-    $resetUrl = $this->generateUrl('app_reset_password', [
-        'selector' => $selector,
-        'verifier' => $verifier,
-    ], UrlGeneratorInterface::ABSOLUTE_URL);
+    // Build password reset URL
+$resetUrl = $this->generateUrl('app_reset_password', [
+    'selector' => $selector,
+    'verifier' => $verifier,
+], UrlGeneratorInterface::ABSOLUTE_URL);
 
-    $this->addFlash('info', sprintf('DEV ONLY: Reset link → %s', $resetUrl));
+// Send password reset email
+$emailMessage = (new Email())
+    ->from('noreply@sandycodes.co.za')
+    ->to($user->getEmail())
+    ->subject('Legendary | Password Reset Request')
+    ->html($this->renderView('emails/password_reset.html.twig', [
+        'user' => $user,
+        'resetUrl' => $resetUrl,
+    ]));
+
+$mailer->send($emailMessage);
+
 }
 
 // Always show success message regardless of whether email exists
@@ -81,7 +95,7 @@ return $this->render('reset_password/forgot_password.html.twig', [
     public function resetPassword(Request $request, EntityManagerInterface $entityManager, string $selector, string $verifier): Response
     {
       
-// 1️⃣ Validate token
+// Validate token
     $token = $entityManager->getRepository(PasswordResetToken::class)->findOneBy(['selector' => $selector]);
 
     if (!$token || $token->getExpiresAt() < new \DateTimeImmutable() || $token->getUsedAt() !== null) {
@@ -94,23 +108,15 @@ return $this->render('reset_password/forgot_password.html.twig', [
         return $this->redirectToRoute('app_forgot_password');
     }
 
-    // 2️⃣ Build form
+    // Build form
     $form = $this->createForm(\App\Form\ResetPasswordType::class);
     $form->handleRequest($request);
 
-    // 3️⃣ Handle submission
+    // Handle submission
     if ($form->isSubmitted() && $form->isValid()) {
 
     // Check if passwords match
-    $newPassword = $form->get('plainPassword')->get('first')->getData();
-    $confirmPassword = $form->get('plainPassword')->get('second')->getData();
- 
-    if ($newPassword !== $confirmPassword) {
-    return $this->render('reset_password/reset_form.html.twig', [
-        'resetForm' => $form->createView(),
-        'error_message' => 'Passwords do not match.',
-     ]);
-     }
+    $newPassword = $form->get('plainPassword')->getData();
 
         // Update user password
         $user = $token->getUser();
@@ -126,10 +132,10 @@ return $this->render('reset_password/forgot_password.html.twig', [
         return $this->redirectToRoute('app_login');
     }
 
-    // 4️⃣ Render the form
-    return $this->render('reset_password/reset_form.html.twig', [
-        'resetForm' => $form->createView(),
-    ]);
+    // Render the form
+   return $this->render('reset_password/reset_form.html.twig', [
+    'resetForm' => $form->createView(),
+]);
 }
 
    }

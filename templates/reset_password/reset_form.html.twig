@@ -17,16 +17,31 @@
           <p class="text-muted mb-4">Enter your new password below to complete the reset process.</p>
 
 {% if error_message is defined %}
-<div class="alert alert-danger text-center">
-{{ error_message }}
-</div>
+  <div class="alert alert-danger text-center">
+    {{ error_message }}
+  </div>
 {% endif %}
 
 {{ form_start(resetForm) }}
-{{ form_row(resetForm.plainPassword.first, {label: 'New Password'}) }}
-{{ form_row(resetForm.plainPassword.second, {label: 'Confirm Password'}) }}
+
+{% for error in resetForm.vars.errors %}
+  <div class="alert alert-danger text-center mb-3">
+    {{ error.message }}
+  </div>
+{% endfor %}
+
+{{ form_row(resetForm.plainPassword.first, { label: 'New Password' }) }}
+{{ form_row(resetForm.plainPassword.second, { label: 'Confirm Password' }) }}
+
 <button type="submit" class="btn btn-primary w-100 mt-2">Update Password</button>
+
 {{ form_end(resetForm) }}
+
+
+{% for error in resetForm.plainPassword.first.vars.errors %}
+  <div class="alert alert-danger text-center">{{ error.message }}</div>
+{% endfor %}
+
 
         </div>
       </div>
