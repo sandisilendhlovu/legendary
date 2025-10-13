@@ -34,7 +34,13 @@
    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control mb-3" autocomplete="email" required autofocus>
    <label for="inputPassword">Password</label>
    <input type="password" name="password" id="inputPassword" class="form-control mb-3" autocomplete="current-password" required>
-   <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+   <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+    
+  <div class="form-check text-start mb-3">
+  <input type="checkbox" name="_remember_me" id="remember_me" class="form-check-input">
+  <label class="form-check-label" for="remember_me">Remember me</label>
+  </div>
 
 
     <button class="btn btn-lg btn-primary mt-2" type="submit">
