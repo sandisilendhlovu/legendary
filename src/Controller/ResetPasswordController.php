@@ -100,7 +100,17 @@ return $this->render('reset_password/forgot_password.html.twig', [
 
     // 3️⃣ Handle submission
     if ($form->isSubmitted() && $form->isValid()) {
-        $newPassword = $form->get('plainPassword')->getData();
+
+    // Check if passwords match
+    $newPassword = $form->get('plainPassword')->get('first')->getData();
+    $confirmPassword = $form->get('plainPassword')->get('second')->getData();
+ 
+    if ($newPassword !== $confirmPassword) {
+    return $this->render('reset_password/reset_form.html.twig', [
+        'resetForm' => $form->createView(),
+        'error_message' => 'Passwords do not match.',
+     ]);
+     }
 
         // Update user password
         $user = $token->getUser();
@@ -121,3 +131,5 @@ return $this->render('reset_password/forgot_password.html.twig', [
         'resetForm' => $form->createView(),
     ]);
 }
+
+   }
