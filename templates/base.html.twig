@@ -59,6 +59,18 @@
     </nav>
   {% endif %}
 
+{# Flash messages (for alerts and info banners) #}
+  <div class="container mt-3">
+    {% for label, messages in app.flashes %}
+      {% for message in messages %}
+        <div class="alert alert-{{ label }} alert-dismissible fade show text-center" role="alert">
+          {{ message|raw }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    {% endfor %}
+  </div>
+
   {% block body %}{% endblock %}
 
   {# Bootstrap JS #}
