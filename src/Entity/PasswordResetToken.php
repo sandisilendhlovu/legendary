@@ -5,33 +5,46 @@ namespace App\Entity;
 use App\Repository\PasswordResetTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Represents a single password reset request.
+ * Linked to a User and stores secure reset tokens with expiry and usage timestamps.
+ */
+
 #[ORM\Entity(repositoryClass: PasswordResetTokenRepository::class)]
 class PasswordResetToken
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    // Each reset token belongs to a specific user
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?User $user = null;
 
-    #[ORM\Column(length: 32)]
+    // Short visible identifier used in reset URLs
+    #[ORM\Column(type: 'string', length: 32)]
     private ?string $selector = null;
 
-    #[ORM\Column(length: 255)]
+    // Secure hashed verifier token
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $verifierHash = null;
 
-    #[ORM\Column]
+    // Timestamp when token was created
+    #[ORM\Column(type: 'datetime_immutable', options: ['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column]
+    // Expiration time (+1 hour from creation)
+    #[ORM\Column(type: 'datetime_immutable')]
     private ?\DateTimeImmutable $expiresAt = null;
 
-    #[ORM\Column(nullable: true)]
+    // Marks when the token was used; null = still valid
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $usedAt = null;
 
+
+    // === Getters & Setters ===
     public function getId(): ?int
     {
         return $this->id;
