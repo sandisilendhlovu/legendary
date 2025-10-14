@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use App\Service\MailerService;
+
 
 
 
@@ -28,7 +30,7 @@ final class ResetPasswordController extends AbstractController
     }
 
     #[Route('/forgot-password', name: 'app_forgot_password', methods: ['GET', 'POST'])]
-    public function forgotPassword(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
+    public function forgotPassword(Request $request, EntityManagerInterface $entityManager, MailerService $mailerService): Response
     {
 
 
@@ -62,17 +64,8 @@ $resetUrl = $this->generateUrl('app_reset_password', [
     'verifier' => $verifier,
 ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-// Send password reset email
-$emailMessage = (new Email())
-    ->from('noreply@sandycodes.co.za')
-    ->to($user->getEmail())
-    ->subject('Legendary | Password Reset Request')
-    ->html($this->renderView('emails/password_reset.html.twig', [
-        'user' => $user,
-        'resetUrl' => $resetUrl,
-    ]));
+$mailerService->sendPasswordResetEmail($user, $resetUrl);
 
-$mailer->send($emailMessage);
 
 }
 

@@ -6,22 +6,24 @@ use App\Entity\User;
 use App\Form\RegistrationFormType; 
 use App\Security\EmailVerifier; 
 use Doctrine\ORM\EntityManagerInterface; 
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;  
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController; 
 use Symfony\Component\HttpFoundation\Request; 
 use Symfony\Component\HttpFoundation\Response; 
-use Symfony\Component\Mime\Address; 
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface; 
 use Symfony\Component\Routing\Attribute\Route; 
 use Symfony\Contracts\Translation\TranslatorInterface;  
-use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface; 
+use App\Service\MailerService;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 
 class RegistrationController extends AbstractController
 {
     public function __construct(
-        private EmailVerifier $emailVerifier, 
-        private EntityManagerInterface $entityManager
-        )
+    private EmailVerifier $emailVerifier,
+    private EntityManagerInterface $entityManager,
+    private MailerService $mailerService
+    )
+
     {
     }
 
@@ -50,13 +52,13 @@ class RegistrationController extends AbstractController
  
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('noreply@sandycodes.co.za', 'Legendary Login System'))
-                    ->to((string) $user->getEmail())
-                    ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
+          $verifyUrl = $this->generateUrl('app_verify_email', [
+         'email' => $user->getEmail(),
+         'token' => bin2hex(random_bytes(16)),
+         ], UrlGeneratorInterface::ABSOLUTE_URL);
+
+          $this->mailerService->sendVerificationEmail($user, $verifyUrl);
+
 
             // do anything else you need here, like send an email
 
