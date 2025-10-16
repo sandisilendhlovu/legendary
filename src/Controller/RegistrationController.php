@@ -94,7 +94,8 @@ class RegistrationController extends AbstractController
          $user->setIsVerified(true);
          $this->entityManager->flush();
 
-        $this->addFlash('success', '✅ Your email address has been successfully verified.');
+         $this->addFlash('success', 'Your email address has been successfully verified.');
+
         return $this->redirectToRoute('app_login');
 
     }
