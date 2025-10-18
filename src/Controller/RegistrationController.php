@@ -38,7 +38,7 @@ class RegistrationController extends AbstractController
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
 
-            // encode the plain password
+            // Hash the user's plain password before saving to the database
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
 
 
@@ -51,7 +51,7 @@ class RegistrationController extends AbstractController
 
  
 
-            // generate a signed url and email it to the user
+          // Generate a secure tokenized verification URL and email it to the user
           $verifyUrl = $this->generateUrl('app_verify_email', [
          'email' => $user->getEmail(),
          'token' => bin2hex(random_bytes(16)),
@@ -60,13 +60,13 @@ class RegistrationController extends AbstractController
           $this->mailerService->sendVerificationEmail($user, $verifyUrl);
 
 
-            // do anything else you need here, like send an email
+           // Email verification link sent — redirect user to verification notice
 
             return $this->redirectToRoute('app_verify_notice');
         }
 
         return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form,
+            'registrationForm' => $form->createView(),
         ]);
     }
 
@@ -82,7 +82,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_home');
     }
 
-          // Look up user by email
+          // Retrieve the user associated with the provided email address
           $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
 
           if (!$user) {
@@ -90,7 +90,7 @@ class RegistrationController extends AbstractController
           return $this->redirectToRoute('app_home');
     }
 
-         // Mark as verified
+         // Mark the user's account as verified and save the changes to the database
          $user->setIsVerified(true);
          $this->entityManager->flush();
 
