@@ -20,18 +20,17 @@ use App\Service\MailerService;
 
 
 final class ResetPasswordController extends AbstractController
-
    {
 
     #[Route('/forgot-password/confirmation', name: 'app_forgot_password_confirmation')]
     public function confirmation(): Response
-    {
+     {
         return $this->render('reset_password/forgot_password_confirmation.html.twig');
-    }
+     }
 
     #[Route('/forgot-password', name: 'app_forgot_password', methods: ['GET', 'POST'])]
     public function forgotPassword(Request $request, EntityManagerInterface $entityManager, MailerService $mailerService): Response
-    {
+      {
 
 
     $form = $this->createForm(ForgotPasswordRequestType::class);
@@ -41,7 +40,7 @@ final class ResetPasswordController extends AbstractController
         $email = $form->get('email')->getData();
         $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
 
-if ($user) {
+    if ($user) {
     // Generate secure random strings
     $selector = bin2hex(random_bytes(9));     // short visible id
     $verifier = bin2hex(random_bytes(32));    // long secret
@@ -67,7 +66,7 @@ $resetUrl = $this->generateUrl('app_reset_password', [
 $mailerService->sendPasswordResetEmail($user, $resetUrl);
 
 
-}
+ }
 
 // Always show success message regardless of whether email exists
 $this->addFlash('success', sprintf(
@@ -77,10 +76,10 @@ $this->addFlash('success', sprintf(
 
 return $this->redirectToRoute('app_forgot_password_confirmation'); 
 
-}
+ }
 
-return $this->render('reset_password/forgot_password.html.twig', [
-     'requestForm' => $form->createView(),
+   return $this->render('reset_password/forgot_password.html.twig', [
+            'requestForm' => $form->createView(),
         ]);
     }
 
@@ -104,31 +103,31 @@ return $this->render('reset_password/forgot_password.html.twig', [
     // Build form
     $form = $this->createForm(\App\Form\ResetPasswordType::class);
     $form->handleRequest($request);
-
+    
     // Handle submission
-    if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newPassword = $form->get('plainPassword')->getData(); // returns the new password string
 
-    // Check if passwords match
-    $newPassword = $form->get('plainPassword')->getData();
+            if (strlen($newPassword) < 8) {
+                $this->addFlash('danger', 'Your password must be at least 8 characters long.');
+            } else {
+                // Update user password
+                $user = $token->getUser();
+                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                $user->setPassword($hashedPassword);
 
-        // Update user password
-        $user = $token->getUser();
-        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-        $user->setPassword($hashedPassword);
+                // Mark token as used
+                $token->setUsedAt(new \DateTimeImmutable());
+                $entityManager->flush();
 
-        // Mark token as used
-        $token->setUsedAt(new \DateTimeImmutable());
+                $this->addFlash('success', 'Your password has been successfully updated.');
+                return $this->redirectToRoute('app_login');
+            }
+        }
 
-        $entityManager->flush();
-
-        $this->addFlash('success', 'Your password has been successfully updated.');
-        return $this->redirectToRoute('app_login');
+        // Always render the form
+        return $this->render('reset_password/reset_form.html.twig', [
+            'resetForm' => $form->createView(),
+        ]);
     }
-
-    // Render the form
-   return $this->render('reset_password/reset_form.html.twig', [
-    'resetForm' => $form->createView(),
-]);
 }
-
-   }
