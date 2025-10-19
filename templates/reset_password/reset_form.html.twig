@@ -26,7 +26,20 @@
           <h1 class="h4 mb-3">Reset Your Password</h1>
           <p class="text-muted mb-4">Enter your new password below to complete the reset process.</p>
 
-      {{ form_start(resetForm, { attr: { 'data-turbo': 'false' } }) }}
+      {% set resetAction = path('app_reset_password', {
+       selector: app.request.get('selector'),
+       verifier: app.request.get('verifier')
+       }) %}
+
+     {{ form_start(resetForm, {
+     attr: {
+    'data-turbo': 'false',
+    'autocomplete': 'off',          # prevent cached form restoration
+    'novalidate': 'novalidate'
+      },
+      method: 'POST',                    # explicitly enforce POST
+    action: resetAction
+     }) }}
 
       {# Display any global form errors (e.g. "Passwords must match") #}
       {{ form_errors(resetForm) }}

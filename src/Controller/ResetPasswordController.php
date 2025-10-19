@@ -103,6 +103,20 @@ return $this->redirectToRoute('app_forgot_password_confirmation');
     // Build form
     $form = $this->createForm(\App\Form\ResetPasswordType::class);
     $form->handleRequest($request);
+
+    //Check for expired or invalid CSRF token and refresh the form safely
+     if ($form->isSubmitted() && !$form->isValid()) {
+      foreach ($form->getErrors(true) as $error) {
+        if (str_contains($error->getMessage(), 'Invalid CSRF token')) {
+            $this->addFlash('warning', 'Your session expired. Please try again.');
+            return $this->redirectToRoute('app_reset_password', [
+                'selector' => $selector,
+                'verifier' => $verifier,
+            ]);
+        }
+     }
+  }
+
     
     // Handle submission
         if ($form->isSubmitted() && $form->isValid()) {

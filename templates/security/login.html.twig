@@ -4,21 +4,21 @@
 
 {% block body %}
 
-<div class="container py-5">
+<div class="container py-5>
 <div class="row justify-content-center">
-<div class="col-12 col-md-6 col-lg-4">
+<div class="col-12 col-md-8 col-lg-5 col-xl-4">
 <div class="card shadow-sm">
 <div class="card-body p-4">
 
-<div class="text-center mb-4">
+  <div class="text-center mb-4">
   <img 
     src="{{ asset('images/legendary-logo.png') }}" 
     alt="Legendary Logo" 
     class="img-fluid mx-auto d-block"
-    style="max-height: 80px; width: auto;">
+    style="max-height: 64px; width: auto;">
   </div>
  
-<form method="post">
+   <form method="post" data-turbo="false">
     {% if error %}
       <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
@@ -29,7 +29,7 @@
         </div>
     {% endif %}
      
-   <h1 class="h3 mb-4 font-weight-normal">Login</h1>
+   <h1 class="h3 mb-4 font-weight-normal text-center">Login</h1>
    <label for="inputEmail">Email</label>
    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control mb-3" autocomplete="email" required autofocus>
    <label for="inputPassword">Password</label>
@@ -43,7 +43,7 @@
   </div>
 
 
-    <button class="btn btn-lg btn-primary mt-2" type="submit">
+    <button class="btn btn-primary w-100 mt-3" type="submit">
         Sign in
     </button>
 
@@ -62,12 +62,11 @@
     </div>
   </div>
 
- <p class="small text-secondary mt-4 mb-0 text-center">
+ <p class="small text-secondary mt-5 mb-0 text-center">
   <strong>Terms and Conditions</strong><br>
   All information on this site is <strong>Private, Confidential, and Proprietary.</strong><br>
   Do not share with external parties. Copyright © Afrihost 2025.
 </p>
-
 
 </div>
 
