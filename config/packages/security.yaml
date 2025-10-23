@@ -5,7 +5,6 @@ security:
 
   # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
   providers:
-    # used to reload user from session & other features (e.g. switch_user)
     app_user_provider:
       entity:
         class: App\Entity\User
@@ -28,7 +27,7 @@ security:
 
       remember_me:
         secret: '%kernel.secret%'
-        lifetime: 604800     # 7 days in seconds
+        lifetime: 604800     # 7 days
         path: /
         always_remember_me: false
 
@@ -44,3 +43,4 @@ when@test:
         cost: 4
         time_cost: 3
         memory_cost: 10
+

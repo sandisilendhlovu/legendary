@@ -10,15 +10,15 @@
     <div class="card shadow-sm">
     <div class="card-body p-4">
 
-  <div class="text-center mb-4">
+<div class="text-center mb-3">
   <img 
     src="{{ asset('images/legendary-logo.png') }}" 
     alt="Legendary Logo" 
     class="img-fluid mx-auto d-block"
-    style="max-height: 80px; width: auto;"
+    style="max-height: 80px; width: auto;">
+</div>
 
-  </div>
- 
+    <p>Generated token: {{ csrf_token('authenticate') }}</p>
    <form method="post" data-turbo="false">
     {% if error %}
       <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -30,7 +30,7 @@
         </div>
     {% endif %}
      
-   <h1 class="h3 mb-4 font-weight-normal text-center">Login To Your Account</h1>
+   <h1 class="h3 mb-4 font-weight-normal text-center">Login</h1>
    <label for="inputEmail">Afrihost Email Address</label>
    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control mb-3" autocomplete="email" required autofocus>
    <label for="inputPassword">Password</label>
