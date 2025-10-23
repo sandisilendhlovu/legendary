@@ -18,7 +18,6 @@
     style="max-height: 80px; width: auto;">
 </div>
 
-    <p>Generated token: {{ csrf_token('authenticate') }}</p>
    <form method="post" data-turbo="false">
     {% if error %}
       <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
