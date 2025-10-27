@@ -21,9 +21,9 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public const LOGIN_ROUTE = 'app_login';
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
-    {
-    }
+    public function __construct(
+        private UrlGeneratorInterface $urlGenerator
+        ) {}
 
     public function authenticate(Request $request): Passport
     {
@@ -31,24 +31,24 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     $password = $request->request->get('password', '');
     $csrfToken = $request->request->get('_csrf_token');
 
+    // Store last attempted email in session for user convenience
     $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
 
     return new Passport(
         new UserBadge($email),
         new PasswordCredentials($password),
-        [
-            new CsrfTokenBadge('authenticate', $csrfToken),
-        ]
+        [new CsrfTokenBadge('authenticate', $csrfToken),]
     );
     }
 
-
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
-    {
+    {   
+        // Redirect to intended target if available
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
-
+        
+       // Default redirect after successful login
        return new RedirectResponse($this->urlGenerator->generate('app_home'));
 
     }

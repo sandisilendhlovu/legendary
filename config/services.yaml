@@ -1,23 +1,11 @@
-# config/services.yaml
-parameters: {}
-
+# Default service configuration
 services:
-    _defaults:
-        autowire: true
-        autoconfigure: true
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-    App\:
-        resource: '../src/'
+  App\:
+    resource: '../src/'
 
-    # Force Symfony to use the classic CSRF token manager
-    security.csrf.token_manager.inner:
-        class: Symfony\Component\Security\Csrf\CsrfTokenManager
-        arguments:
-            $generator: '@security.csrf.token_generator'
-            $storage: '@security.csrf.token_storage'
-
-    # Proper way to override the alias
-    security.csrf.token_manager:
-        alias: security.csrf.token_manager.inner
-        public: true
-
+  # Explicit CSRF token manager binding (ensures login form CSRF works)
+  Symfony\Component\Security\Csrf\CsrfTokenManagerInterface: '@security.csrf.token_manager' 
