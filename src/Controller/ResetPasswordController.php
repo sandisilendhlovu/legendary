@@ -11,10 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Form\ForgotPasswordRequestType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
-use App\Service\MailerService;
+use App\Service\MailerService; 
 
 
 
@@ -91,7 +88,7 @@ return $this->redirectToRoute('app_forgot_password_confirmation');
     $token = $entityManager->getRepository(PasswordResetToken::class)->findOneBy(['selector' => $selector]);
 
     if (!$token || $token->getExpiresAt() < new \DateTimeImmutable() || $token->getUsedAt() !== null) {
-        $this->addFlash('danger', 'This password reset link is invalid or expired.');
+        $this->addFlash('danger', 'Your password reset link is invalid or has expired.');
         return $this->redirectToRoute('app_forgot_password');
     }
 

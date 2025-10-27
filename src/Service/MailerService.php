@@ -38,7 +38,7 @@ class MailerService extends AbstractController
     public function sendVerificationEmail($user, string $verifyUrl): void
     {
         $email = (new Email())
-            ->from('noreply@sandycodes.co.za')
+            ->from('Legendary <noreply@sandycodes.co.za>')
             ->to($user->getEmail())
             ->subject('Legendary | Verify Your Email Address')
             ->html($this->renderView('emails/verify_notice.html.twig', [
