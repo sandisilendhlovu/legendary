@@ -29,10 +29,16 @@
 
     {{ form_errors(registrationForm) }}
 
-    {{ form_start(registrationForm) }}
+    {{ form_start(registrationForm, { attr: {'data-turbo': 'false'} }) }}
+
     {{ form_row(registrationForm.firstName) }}
     {{ form_row(registrationForm.lastName) }}
-    {{ form_row(registrationForm.email) }}
+<div class="mb-3">
+    {{ form_label(registrationForm.email) }}
+    {{ form_widget(registrationForm.email) }}
+    {{ form_errors(registrationForm.email) }}
+</div>
+
     {{ form_row(registrationForm.plainPassword, {
             label: 'Password' }) }}
 
