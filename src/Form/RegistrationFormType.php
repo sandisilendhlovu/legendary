@@ -19,59 +19,64 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+           // First Name
             ->add('firstName', TextType::class, [
             'label' => 'Name',
+            'attr' => ['autocomplete' => 'given-name'],
             'constraints' => [
               new NotBlank ([
-                'message' => 'Please enter your first name',
+                'message' => 'Please enter your first name.',
               ]),
             ],
         ])
+          
+           // Last Name  
             ->add('lastName', TextType::class, [
               'label' => 'Surname',
+              'attr' => ['autocomplete' => 'family-name'],
               'constraints' => [
                 new NotBlank([
-                    'message' => 'Please enter your surname',
+                    'message' => 'Please enter your surname.',
                 ]), 
             ],
           
         ])
-
+             // Email
             ->add('email', EmailType::class, [
                 'label' => 'Afrihost Email Address',
+                'attr' => ['autocomplete' => 'username'],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter your Afrihost email address'
+                        'message' => 'Please enter your Afrihost email address.'
                         
                     ]),
                 ],
             ])
-
+                 // Password
                ->add('plainPassword', PasswordType::class, [
                 'label' => 'Password',
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Please enter a password.',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'minMessage' =>'Your password must be at least {{ limit }} characters long.',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
                 ],
             ])
 
+              // Terms Checkbox
             ->add('agreeTerms', CheckboxType::class, [
                 'label' => 'I agree to the Terms and Conditions',
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'You must agree to the terms and conditions to register',
+                        'message' => 'You must agree to the terms and conditions to register.',
                     ]),
                 ],
             ])
