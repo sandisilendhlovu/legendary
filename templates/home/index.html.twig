@@ -17,6 +17,7 @@
      </nav>
 
      <style>
+
 /* Sidebar hover and active styles */
 .nav.flex-column .nav-link {
   color: #333;
@@ -49,6 +50,7 @@
     <ul class="navbar-nav gap-4">
       <li class="nav-item"><a class="nav-link fw-semibold" href="#">AirMobile</a></li>
       <li class="nav-item"><a class="nav-link fw-semibold" href="#">Wireless</a></li>
+       <li class="nav-item"><a class="nav-link fw-semibold" href="#">DSL</a></li>
       <li class="nav-item"><a class="nav-link fw-semibold" href="#">Fibre(Orders)</a></li>
       <li class="nav-item"><a class="nav-link fw-semibold" href="#">Fibre(Technical)</a></li>
       <li class="nav-item"><a class="nav-link fw-semibold" href="#">VoIP</a></li>
@@ -63,7 +65,7 @@
   color: #333;
   border-bottom: 2px solid transparent;
   transition: color 0.2s ease, border-color 0.2s ease;
-  text-decoration: none !important; /* remove Bootstrap’s underline */
+  text-decoration: none !important;
 }
 
 .navbar-nav .nav-link:hover {
@@ -74,7 +76,7 @@
 .navbar-nav .nav-link.active {
   color: #e60000 !important;
   border-bottom-color: #e60000;
-  text-decoration: none !important; /* prevent double underline */
+  text-decoration: none !important;
 }
 </style>
 <div class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
@@ -84,7 +86,7 @@
     {% else %}
       <h1>Hello, Guest!</h1>
     {% endif %}
-    <p>You’re now logged into Legendary!</p>
+    <p>You’re now logged into Legendary</p>
     <a href="{{ path('app_logout') }}" class="btn btn-primary mt-3">Logout</a>
   </div>
 </div>
