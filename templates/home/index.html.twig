@@ -34,6 +34,25 @@
   </div>
 </nav>
 
+<style>
+.navbar-nav .nav-link {
+  color: #333;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  text-decoration: none !important; /* remove Bootstrap’s underline */
+}
+
+.navbar-nav .nav-link:hover {
+  color: #e60000 !important;
+  border-bottom-color: #e60000;
+}
+
+.navbar-nav .nav-link.active {
+  color: #e60000 !important;
+  border-bottom-color: #e60000;
+  text-decoration: none !important; /* prevent double underline */
+}
+</style>
 <div class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
   <div style="text-align: center;">
     {% if app.user %}
