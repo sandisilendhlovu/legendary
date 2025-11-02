@@ -8,42 +8,42 @@
   <!-- Sidebar -->
   <nav class="bg-dark text-white p-3" style="width: 230px;">
     <ul class="nav flex-column">
-      <li class="nav-item mb-2"><a href="#" class="nav-link text-white">Home</a></li>
-      <li class="nav-item mb-2"><a href="#" class="nav-link text-white">Dashboard</a></li>
-      <li class="nav-item mb-2"><a href="#" class="nav-link text-white">Troubleshooting</a></li>
-      <li class="nav-item mb-2"><a href="#" class="nav-link text-white">Devices</a></li>
-      <li class="nav-item mb-2"><a href="#" class="nav-link text-white">New Flows</a></li>
-      <li class="nav-item mb-2"><a href="#" class="nav-link text-white">Admin</a></li>
+      <li class="nav-item mb-4"><a href="#" class="nav-link text-white">Home</a></li>
+      <li class="nav-item mb-4"><a href="#" class="nav-link text-white">Troubleshooting</a></li>
+      <li class="nav-item mb-4"><a href="#" class="nav-link text-white">Devices</a></li>
+      <li class="nav-item mb-4"><a href="#" class="nav-link text-white">New Flows</a></li>
+      <li class="nav-item mb-4"><a href="#" class="nav-link text-white">Admin</a></li>
      </ul>
      </nav>
 
     <!-- Main Content Area -->
     <div class="flex-grow-1 bg-light">
 
-   <!-- Top Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link fw-semibold" href="#">AirMobile</a></li>
-        <li class="nav-item"><a class="nav-link fw-semibold" href="#">DSL</a></li>
-        <li class="nav-item"><a class="nav-link fw-semibold" href="#">Fibre (technical)</a></li>
-        <li class="nav-item"><a class="nav-link fw-semibold" href="#">Fibre (orders)</a></li>
-        <li class="nav-item"><a class="nav-link fw-semibold" href="#">VoIP</a></li>
-        <li class="nav-item"><a class="nav-link fw-semibold" href="#">Hosting</a></li>
-        <li class="nav-item"><a class="nav-link fw-semibold" href="#">Accounts</a></li>
-      </ul>
-    </nav>
+<!-- Top Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-5 py-3">
+  <div class="container-fluid d-flex justify-content-start">
+    <ul class="navbar-nav gap-4">
+      <li class="nav-item"><a class="nav-link fw-semibold" href="#">AirMobile</a></li>
+      <li class="nav-item"><a class="nav-link fw-semibold" href="#">Wireless</a></li>
+      <li class="nav-item"><a class="nav-link fw-semibold" href="#">Fibre(Orders)</a></li>
+      <li class="nav-item"><a class="nav-link fw-semibold" href="#">Fibre(Technical)</a></li>
+      <li class="nav-item"><a class="nav-link fw-semibold" href="#">VoIP</a></li>
+      <li class="nav-item"><a class="nav-link fw-semibold" href="#">Hosting</a></li>
+      <li class="nav-item"><a class="nav-link fw-semibold" href="#">Accounts</a></li>
+    </ul>
+  </div>
+</nav>
 
-    <div style="max-width: 600px; margin: 80px auto; text-align: center;">
-{% if app.user %}
-<h1>Welcome back, {{ (app.user.firstName ?? app.user.email)|capitalize }}!</h1>
-{% else %}
-<h1> Hello, Guest!</h1>
-{% endif %}
-
-<p> You’re now logged into Legendary! </p>
-
-<a href="{{ path('app_logout') }}" class="btn btn-primary mt-3">Logout</a>
-</div>
+<div class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+  <div style="text-align: center;">
+    {% if app.user %}
+      <h1>Welcome back, {{ (app.user.firstName ?? app.user.email)|capitalize }}!</h1>
+    {% else %}
+      <h1>Hello, Guest!</h1>
+    {% endif %}
+    <p>You’re now logged into Legendary!</p>
+    <a href="{{ path('app_logout') }}" class="btn btn-primary mt-3">Logout</a>
+  </div>
 </div>
 </div>
 {% endblock %} 
