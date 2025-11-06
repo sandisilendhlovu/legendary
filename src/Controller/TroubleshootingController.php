@@ -44,5 +44,10 @@ class TroubleshootingController extends AbstractController
     return $this->render('troubleshooting/fibre_technical.html.twig');
    }
 
-
+   #[Route('/troubleshooting/voip', name: 'app_troubleshooting_voip')]
+    public function voip(): Response
+   {
+    return $this->render('troubleshooting/voip.html.twig');
+   }
+   
 }
