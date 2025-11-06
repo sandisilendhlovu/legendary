@@ -31,4 +31,11 @@ class TroubleshootingController extends AbstractController
     {
     return $this->render('troubleshooting/dsl.html.twig');
     }
+
+    #[Route('/troubleshooting/fibre-orders', name: 'app_troubleshooting_fibre_orders')]
+    public function fibreOrders(): Response
+    {
+    return $this->render('troubleshooting/fibre_orders.html.twig');
+    }
+
 }
