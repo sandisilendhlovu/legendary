@@ -13,4 +13,10 @@ class TroubleshootingController extends AbstractController
     {
         return $this->render('troubleshooting/index.html.twig');
     }
+
+    #[Route('/troubleshooting/airmobile', name: 'app_troubleshooting_airmobile')]
+    public function airmobile(): Response
+    {
+        return $this->render('troubleshooting/airmobile.html.twig');
+    }
 }
