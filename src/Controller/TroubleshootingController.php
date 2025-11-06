@@ -38,4 +38,11 @@ class TroubleshootingController extends AbstractController
     return $this->render('troubleshooting/fibre_orders.html.twig');
     }
 
+    #[Route('/troubleshooting/fibre-technical', name: 'app_troubleshooting_fibre_technical')]
+    public function fibreTechnical(): Response
+   {
+    return $this->render('troubleshooting/fibre_technical.html.twig');
+   }
+
+
 }
