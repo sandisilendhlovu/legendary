@@ -19,4 +19,11 @@ class TroubleshootingController extends AbstractController
     {
         return $this->render('troubleshooting/airmobile.html.twig');
     }
+
+    #[Route('/troubleshooting/wireless', name: 'app_troubleshooting_wireless')]
+    public function dsl(): Response
+    {
+    return $this->render('troubleshooting/wireless.html.twig');
+    }
+
 }
