@@ -49,5 +49,11 @@ class TroubleshootingController extends AbstractController
    {
     return $this->render('troubleshooting/voip.html.twig');
    }
-   
+
+   #[Route('/troubleshooting/hosting', name: 'app_troubleshooting_hosting')]
+   public function hosting(): Response
+   {
+    return $this->render('troubleshooting/hosting.html.twig');
+   }
+
 }
