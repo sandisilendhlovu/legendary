@@ -56,4 +56,11 @@ class TroubleshootingController extends AbstractController
     return $this->render('troubleshooting/hosting.html.twig');
    }
 
+   #[Route('/troubleshooting/accounts', name: 'app_troubleshooting_accounts')]
+   public function accounts(): Response
+  {
+    return $this->render('troubleshooting/accounts.html.twig');
+  }
+
+
 }
