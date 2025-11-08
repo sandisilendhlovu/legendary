@@ -6,5 +6,46 @@
 <div class="container py-5 text-center">
     <h1 class="mb-4">Accounts Troubleshooting</h1>
     <p class="text-muted">This is the starting point for Accounts troubleshooting.</p>
+
+
+<button class="btn btn-danger px-4 py-2 mt-4" data-bs-toggle="modal" data-bs-target="#accountsModal">
+  Start Accounts Troubleshooting
+</button>
+
+<!-- Start Troubleshooting Modal -->
+<div class="modal fade" id="accountsModal" tabindex="-1" aria-labelledby="accountsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="accountsModalLabel">Accounts Enquiry — Bounced Debit Order</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <p class="fw-semibold mb-3">What is the reason for the bounce?</p>
+
+        <div id="step1">
+          <button class="btn btn-outline-danger w-100 mb-2" onclick="showStep('insufficient')">Insufficient funds or reversal</button>
+          <button class="btn btn-outline-danger w-100" onclick="showStep('expired')">Expired card details</button>
+        </div>
+
+        <div id="insufficient" class="d-none">
+          <p class="mt-3"> Ensure the client has sufficient funds in their account and assist them in resubmitting their debit order via ClientZone or making a once-off EFT payment.</p>
+          <button class="btn btn-secondary mt-3" onclick="restartFlow()">Start Over</button>
+        </div>
+
+        <div id="expired" class="d-none">
+          <p class="mt-3"> Guide the client through updating their payment details 
+          (<a href="https://help.afrihost.com/entry/how-to-update-existing-payment-details" class="text-danger text-decoration-underline"> Follow these steps </a>), 
+          then resubmit their payment from ClientZone (or make a once-off EFT payment).</p>
+          <button class="btn btn-secondary mt-3" onclick="restartFlow()">Start Over</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>
 {% endblock %}
