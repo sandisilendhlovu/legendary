@@ -9,7 +9,7 @@
 
 
 <button class="btn btn-danger px-4 py-2 mt-4" data-bs-toggle="modal" data-bs-target="#accountsModal">
-  Start Accounts Troubleshooting
+  Start Accounts Troubleshooting (Test)
 </button>
 
 <!-- Start Troubleshooting Modal -->
@@ -21,7 +21,7 @@
         <h5 class="modal-title" id="accountsModalLabel">Accounts Enquiry — Bounced Debit Order</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      
+
       <div class="modal-body">
         <p class="fw-semibold mb-3">What is the reason for the bounce?</p>
 
@@ -46,6 +46,17 @@
     </div>
   </div>
 </div>
+<script>
+function showStep(step) {
+  document.getElementById('step1').classList.add('d-none');
+  document.getElementById(step).classList.remove('d-none');
+}
+
+function restartFlow() {
+  document.querySelectorAll('#insufficient, #expired').forEach(el => el.classList.add('d-none'));
+  document.getElementById('step1').classList.remove('d-none');
+}
+</script>
 
 </div>
 {% endblock %}

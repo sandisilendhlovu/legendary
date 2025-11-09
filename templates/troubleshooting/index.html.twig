@@ -22,17 +22,4 @@
 
 </div>
 
-<script>
-function showStep(step) {
-  document.getElementById('step1').classList.add('d-none');
-  document.getElementById(step).classList.remove('d-none');
-}
-
-function restartFlow() {
-  document.querySelectorAll('#insufficient, #expired').forEach(el => el.classList.add('d-none'));
-  document.getElementById('step1').classList.remove('d-none');
-}
-</script>
-
-
 {% endblock %}
