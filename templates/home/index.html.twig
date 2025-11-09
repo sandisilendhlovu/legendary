@@ -3,19 +3,93 @@
 {% block title %}Welcome{% endblock %} 
 
 {% block body %}
+<div class="d-flex" style="min-height: 100vh;"> 
 
-<div style="max-width: 600px; margin: 80px auto; text-align: center;">
-{% if app.user %}
-<h1>Welcome back, {{ (app.user.firstName ?? app.user.email)|capitalize }}!</h1>
-{% else %}
-<h1> Hello, Guest!</h1>
-{% endif %}
+  <!-- Sidebar -->
+  <nav class="bg-dark text-white p-3" style="width: 230px;">
+    <ul class="nav flex-column">
+      <li class="nav-item mb-4"><a href="#" class="nav-link text-white">Home</a></li>
+      <li class="nav-item mb-4"><a href="{{ path('app_troubleshooting') }}" class="nav-link text-white">Troubleshooting</a></li>
+      <li class="nav-item mb-4"><a href="#" class="nav-link text-white">Devices</a></li>
+      <li class="nav-item mb-4"><a href="#" class="nav-link text-white">New Flows</a></li>
+      <li class="nav-item mb-4"><a href="#" class="nav-link text-white">Admin</a></li>
+     </ul>
+     </nav>
 
-<p> You’re now logged into Legendary! </p>
+     <style>
 
-<a href="{{ path('app_logout') }}" class="btn btn-primary mt-3">
- Logout
- </a>
+/* Sidebar hover and active styles */
+.nav.flex-column .nav-link {
+  color: #333;
+  border-left: 3px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+  text-decoration: none !important;
+  padding-left: 10px;
+}
 
+.nav.flex-column .nav-link:hover {
+  color: #e60000 !important;
+  border-left-color: #e60000;
+  background-color: #fdf2f2; /* subtle red tint on hover */
+}
+
+.nav.flex-column .nav-link.active {
+  color: #e60000 !important;
+  border-left-color: #e60000;
+  background-color: #fdf2f2;
+}
+</style>
+
+
+    <!-- Main Content Area -->
+    <div class="flex-grow-1 bg-light">
+
+<!-- Top Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-5 py-3">
+  <div class="container-fluid d-flex justify-content-start">
+    <ul class="navbar-nav gap-4">
+      <li class="nav-item"><a class="nav-link fw-semibold" href="{{ path('app_troubleshooting_airmobile') }}">AirMobile</a></li>
+      <a class="nav-link fw-semibold" href="{{ path('app_troubleshooting_wireless') }}">Wireless</a>
+      <a class="nav-link fw-semibold" href="{{ path('app_troubleshooting_dsl') }}">DSL</a>
+      <a class="nav-link fw-semibold" href="{{ path('app_troubleshooting_fibre_orders') }}">Fibre(Orders)</a>
+      <a class="nav-link fw-semibold" href="{{ path('app_troubleshooting_fibre_technical') }}">Fibre(Technical)</a>
+      <a class="nav-link fw-semibold" href="{{ path('app_troubleshooting_voip') }}">VoIP</a>
+      <a class="nav-link fw-semibold" href="{{ path('app_troubleshooting_hosting') }}">Hosting</a>
+      <a class="nav-link fw-semibold" href="{{ path('app_troubleshooting_accounts') }}">Accounts</a>
+
+    </ul>
+  </div>
+</nav>
+
+<style>
+.navbar-nav .nav-link {
+  color: #333;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  text-decoration: none !important;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #e60000 !important;
+  border-bottom-color: #e60000;
+}
+
+.navbar-nav .nav-link.active {
+  color: #e60000 !important;
+  border-bottom-color: #e60000;
+  text-decoration: none !important;
+}
+</style>
+<div class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+  <div style="text-align: center;">
+    {% if app.user %}
+      <h1>Welcome back, {{ (app.user.firstName ?? app.user.email)|capitalize }}!</h1>
+    {% else %}
+      <h1>Hello, Guest!</h1>
+    {% endif %}
+    <p>You’re now logged into Legendary</p>
+    <a href="{{ path('app_logout') }}" class="btn btn-primary mt-3">Logout</a>
+  </div>
+</div>
 </div>
 {% endblock %} 
