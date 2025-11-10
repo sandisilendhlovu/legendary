@@ -14,7 +14,8 @@
         {{ step.stepNumber }}. {{ step.title }}
     </h4>
 
-    <p class="mt-2">{{ step.content|nl2br }}</p>
+    <p>{{ step.content|raw }}</p>
+
 
     {% if options is not empty %}
         <div class="mt-4">
@@ -39,6 +40,4 @@
             No further steps. End of flow.
         </div>
     {% endif %}
-
-</div>
 {% endblock %}
