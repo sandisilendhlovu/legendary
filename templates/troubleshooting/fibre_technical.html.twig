@@ -7,10 +7,24 @@
     <h1 class="mb-4">Fibre (Technical) Troubleshooting</h1>
     <p class="text-muted">This is the starting point for Fibre (Technical) troubleshooting.</p>
 
-<a href="{{ path('app_flow_view', { id: 1 }) }}" 
-   class="btn btn-danger px-4 py-2 mt-4">
-   Start Fibre Technical Troubleshooting (Demo)
-</a>
+    <h4 class="mt-5 mb-4">What issue is your client experiencing?</h4>
+
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+
+    <a href="{{ path('app_flow_view', { id: 1 }) }}" class="btn btn-outline-danger px-4 py-3">
+            Fibre — Link Down (No Service)
+    </a>   
+
+    <button class="btn btn-secondary px-4 py-3" disabled>
+            Slow Internet Connectivity
+    </button>
+
+    <button class="btn btn-secondary px-4 py-3" disabled>
+            Intermittent Fibre Connection
+    </button>
+
+    </div>
+  </div>
 
 </div>
 {% endblock %}
