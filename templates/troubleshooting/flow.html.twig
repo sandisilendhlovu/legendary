@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ flow.title }}{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+
+    <h1>{{ flow.title }}</h1>
+    <p class="text-muted">{{ flow.description }}</p>
+
+    <hr>
+
+    <p>This is where the interactive step-by-step flow UI will appear.</p>
+
+</div>
+{% endblock %}
