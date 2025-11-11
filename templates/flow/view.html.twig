@@ -36,8 +36,25 @@
             {% endfor %}
         </div>
     {% else %}
-        <div class="alert alert-info mt-4">
-            No further steps. End of flow.
-        </div>
-    {% endif %}
+    <div class="alert alert-info mt-4">
+        No further steps. End of flow.
+    </div>
+
+    <div class="mt-4 d-flex gap-3 justify-content-center">
+
+        <!-- Start Over: go back to Fibre Technical issue selection -->
+        <a href="{{ path('app_troubleshooting_fibre_technical') }}" 
+           class="btn btn-primary px-4 py-2">
+            Start Over
+        </a>
+
+        <!-- Exit Flow: go back to main homepage -->
+        <a href="{{ path('app_home') }}" 
+           class="btn btn-outline-secondary px-4 py-2">
+            Exit Flow
+        </a>
+
+    </div>
+{% endif %}
+</div>
 {% endblock %}
