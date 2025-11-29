@@ -17,10 +17,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id = null; 
+    private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private ?string $email = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $verificationToken = null;
 
     /**
      * @var list<string> The user roles
@@ -193,4 +196,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+public function getVerificationToken(): ?string
+{
+    return $this->verificationToken;
+}
+
+public function setVerificationToken(?string $verificationToken): self
+{
+    $this->verificationToken = $verificationToken;
+
+    return $this;
+}
+
 }
