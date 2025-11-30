@@ -14,8 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Service\MailerService;
 
 
-
-
 final class ResetPasswordController extends AbstractController
    {
         public function __construct(
@@ -139,7 +137,7 @@ $this->addFlash('success', sprintf(
                 $this->entityManager->flush();
 
                 $this->addFlash('success', 'Your password has been successfully updated.');
-                return $this->redirectToRoute('app_login');
+                return $this->redirectToRoute('auth_login');
             }
         }
 

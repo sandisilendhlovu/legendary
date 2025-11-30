@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Service\MailerService;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -68,7 +67,7 @@ class RegistrationController extends AbstractController
 
            // Email verification link sent — redirect user to verification notice
 
-            return $this->redirectToRoute('app_verify_notice');
+            return $this->redirectToRoute('auth_verify_notice');
         }
 
         return $this->render('registration/register.html.twig', [
@@ -85,7 +84,7 @@ class RegistrationController extends AbstractController
 
         if (!$user) {
             $this->addFlash('error', 'Invalid or expired verification link.');
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('home');
         }
 
         // Mark the user's account as verified and clear the token
@@ -96,6 +95,6 @@ class RegistrationController extends AbstractController
 
         $this->addFlash('success', 'Your email address has been successfully verified.');
 
-        return $this->redirectToRoute('app_login');
+        return $this->redirectToRoute('auth_login');
     }
     }
