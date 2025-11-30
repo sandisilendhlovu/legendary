@@ -13,14 +13,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class FlowController extends AbstractController
 {
-    #[Route('/flow/{id}/{step?1}', name: 'app_flow_view')]
+    #[Route('/flow/{flow_id}/{step}', name: 'flow_view', methods: ['GET'], requirements: ['flow_id' => '\d+', 'step' => '\d+'], defaults: ['step' => 1])]
     public function view(
-        int $id,
+        int $flow_id,
         int $step,
         FlowRepository $flowRepository,
         FlowStepRepository $flowStepRepository
     ): Response {
-        $flow = $flowRepository->find($id);
+        $flow = $flowRepository->find($flow_id);
 
         if (!$flow) {
             throw $this->createNotFoundException('Flow not found.');
