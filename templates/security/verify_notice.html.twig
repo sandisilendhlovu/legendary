@@ -7,18 +7,18 @@
   <div class="row justify-content-center">
     <div class="col-12 col-md-8 col-lg-6">
       <div class="card shadow-sm p-4 text-center">
-        
+
         <h2 class="fw-semibold mb-3">
           Hi {{ app.user ? app.user.firstName ?? app.user.email : 'there' }}
         </h2>
 
         <p class="fs-6 text-muted mb-4">
-          You have successfully created your account!  
-          Please check your email inbox for a <strong>verification link</strong>.  
+          You have successfully created your account!
+          Please check your email inbox for a <strong>verification link</strong>.
           Once you verify your email, you'll be able to log in to Legendary.
         </p>
 
-         <a href="{{ path('app_login') }}" class="btn btn-primary px-4 py-2 fw-semibold">
+         <a href="{{ path('auth_login') }}" class="btn btn-primary px-4 py-2 fw-semibold">
           Go to Login
         </a>
       </div>

@@ -10,9 +10,9 @@
     <div class="col-12 col-md-6 col-lg-4">
       <div class="card shadow-sm">
         <div class="card-body p-4 text-center">
-          <img 
-            src="{{ asset('images/legendary-logo.png') }}" 
-            alt="Legendary Logo" 
+          <img
+            src="{{ asset('images/legendary-logo.png') }}"
+            alt="Legendary Logo"
             class="img-fluid mx-auto d-block mb-4"
             style="max-height: 80px; width: auto;">
 
@@ -26,7 +26,7 @@
           <h1 class="h4 mb-3">Reset Your Password</h1>
           <p class="text-muted mb-4">Enter your new password below to complete the reset process.</p>
 
-      {% set resetAction = path('app_reset_password', {
+      {% set resetAction = path('auth_reset_password', {
        selector: app.request.get('selector'),
        verifier: app.request.get('verifier')
        }) %}
