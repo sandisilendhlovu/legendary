@@ -23,12 +23,12 @@
 
             {% for option in options %}
                 {% if option.nextStep %}
-                    <a href="{{ path('app_flow_view', { id: flow.id, step: option.nextStep.stepNumber }) }}"
+                    <a href="{{ path('flow_view', { flow_id: flow.id, step: option.nextStep.stepNumber }) }}"
                        class="btn btn-outline-danger m-1">
                         {{ option.label }}
                     </a>
                 {% else %}
-                    <a href="{{ path('app_flow_view', { id: flow.id, step: step.stepNumber + 1 }) }}"
+                    <a href="{{ path('flow_view', { flow_id: flow.id, step: step.stepNumber + 1 }) }}"
                        class="btn btn-outline-danger m-1">
                         {{ option.label }}
                     </a>
@@ -43,13 +43,13 @@
     <div class="mt-4 d-flex gap-3 justify-content-center">
 
         <!-- Start Over: go back to Fibre Technical issue selection -->
-        <a href="{{ path('app_troubleshooting_fibre_technical') }}" 
+        <a href="{{ path('troubleshooting_fibre_technical') }}"
            class="btn btn-primary px-4 py-2">
             Start Over
         </a>
 
         <!-- Exit Flow: go back to main homepage -->
-        <a href="{{ path('app_home') }}" 
+        <a href="{{ path('home') }}"
            class="btn btn-outline-secondary px-4 py-2">
             Exit Flow
         </a>
