@@ -4,28 +4,27 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\MailerService;
+use App\Service\RegistrationService;
+use App\Service\VerificationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use App\Service\MailerService;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 
 class RegistrationController extends AbstractController
 {
     public function __construct(
-    private EntityManagerInterface $entityManager,
-    private MailerService $mailerService
-    )
-
-    {
+        private RegistrationService $registrationService,
+        private VerificationService $verificationService,
+        private MailerService $mailerService,
+    ) {
     }
 
     #[Route('/register', name: 'auth_register', methods: ['GET', 'POST'])]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
+    public function register (Request $request): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -35,38 +34,22 @@ class RegistrationController extends AbstractController
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
 
-            // Hash the user's plain password before saving to the database
-            $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+            // Delegate registration logic to the service
+            $token = $this->registrationService->registerUser($user, $plainPassword);
 
 
-            $user->setCreatedAt(new \DateTimeImmutable());
-            $user->setUpdatedAt(new \DateTimeImmutable());
-            $user->setIsActive(true);
-            $user->setIsVerified(false);
-
-            $token = bin2hex(random_bytes(32));
-            $user->setVerificationToken($token);
-
-
-
-            $this->entityManager->persist($user);
-            $this->entityManager->flush(); // user gets saved with token
-
-
-
-          // Generate a secure tokenized verification URL and email it to the user
+          // Generate a secure tokenized verification URL
             $verifyUrl = $this->generateUrl(
                 'auth_verify_email',
                 ['token' => $token],
                 UrlGeneratorInterface::ABSOLUTE_URL
             );
 
-
+           // Email it to the user
             $this->mailerService->sendVerificationEmail($user, $verifyUrl);
 
 
-           // Email verification link sent — redirect user to verification notice
-
+          // Redirect user to verification notice page
             return $this->redirectToRoute('auth_verify_notice');
         }
 
@@ -78,23 +61,16 @@ class RegistrationController extends AbstractController
     #[Route('/verify/email/{token}', name: 'auth_verify_email', methods: ['GET'], requirements: ['token' => '[A-Za-z0-9]+'])]
     public function verifyUserEmail(string $token): Response
     {
-        // Find the user by the verification token
-        $user = $this->entityManager->getRepository(User::class)
-            ->findOneBy(['verificationToken' => $token]);
+        $verified = $this->verificationService->verifyEmail($token);
 
-        if (!$user) {
+
+        if (!$verified) {
             $this->addFlash('error', 'Invalid or expired verification link.');
             return $this->redirectToRoute('home');
         }
 
-        // Mark the user's account as verified and clear the token
-        $user->setIsVerified(true);
-        $user->setVerificationToken(null);
-
-        $this->entityManager->flush();
-
         $this->addFlash('success', 'Your email address has been successfully verified.');
 
         return $this->redirectToRoute('auth_login');
-    }
-    }
+     }
+}
