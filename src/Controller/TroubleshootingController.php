@@ -10,58 +10,36 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_USER')]
 class TroubleshootingController extends AbstractController
 {
-    #[Route('/troubleshooting', name: 'troubleshooting', methods: ['GET'])]
+    #[Route('/troubleshooting', name: 'troubleshooting_index', methods: ['GET'])]
     public function index(): Response
     {
         return $this->render('troubleshooting/index.html.twig');
     }
 
-    #[Route('/troubleshooting/airmobile', name: 'troubleshooting_airmobile', methods: ['GET'])]
-    public function airmobile(): Response
+    #[Route('/troubleshooting/{product}', name: 'troubleshooting_product', methods: ['GET'])]
+    public function product(string $product): Response
     {
-        return $this->render('troubleshooting/airmobile.html.twig');
-    }
+        // Allowed troubleshooting products — whitelist for safety (prevents loading invalid templates)
+        $allowedProducts = [
+            'airmobile',
+            'wireless',
+            'dsl',
+            'fibre-orders',
+            'fibre-technical',
+            'voip',
+            'hosting',
+            'accounts',
+        ];
 
-    #[Route('/troubleshooting/wireless', name: 'troubleshooting_wireless', methods: ['GET'])]
-    public function wireless(): Response
-    {
-    return $this->render('troubleshooting/wireless.html.twig');
-    }
+        // Validate the product slug (URL-friendly name used in the route - must match one of the allowed categories)
+        if (!in_array($product, $allowedProducts, true)) {
+            throw $this->createNotFoundException('Troubleshooting category not found.');
+        }
 
-    #[Route('/troubleshooting/dsl', name: 'troubleshooting_dsl', methods: ['GET'])]
-     public function dsl(): Response
-    {
-    return $this->render('troubleshooting/dsl.html.twig');
-    }
+        // Convert slug to matching template name (hyphens become underscores)
+        $templateName = str_replace('-', '_', $product);
 
-    #[Route('/troubleshooting/fibre-orders', name: 'troubleshooting_fibre_orders', methods: ['GET'])]
-    public function fibreOrders(): Response
-    {
-    return $this->render('troubleshooting/fibre_orders.html.twig');
-    }
-
-    #[Route('/troubleshooting/fibre-technical', name: 'troubleshooting_fibre_technical', methods: ['GET'])]
-    public function fibreTechnical(): Response
-   {
-    return $this->render('troubleshooting/fibre_technical.html.twig');
-   }
-
-   #[Route('/troubleshooting/voip', name: 'troubleshooting_voip', methods: ['GET'])]
-    public function voip(): Response
-   {
-    return $this->render('troubleshooting/voip.html.twig');
-   }
-
-   #[Route('/troubleshooting/hosting', name: 'troubleshooting_hosting', methods: ['GET'])]
-   public function hosting(): Response
-   {
-    return $this->render('troubleshooting/hosting.html.twig');
-   }
-
-   #[Route('/troubleshooting/accounts', name: 'troubleshooting_accounts', methods: ['GET'])]
-   public function accounts(): Response
-  {
-    return $this->render('troubleshooting/accounts.html.twig');
+    return $this->render(sprintf('troubleshooting/%s.html.twig', $templateName));
   }
 
 

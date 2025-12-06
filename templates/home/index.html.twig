@@ -9,7 +9,7 @@
   <nav class="bg-dark text-white p-3" style="width: 230px;">
     <ul class="nav flex-column">
       <li class="nav-item mb-4"><a href="#" class="nav-link text-white">Home</a></li>
-      <li class="nav-item mb-4"><a href="{{ path('troubleshooting') }}" class="nav-link text-white">Troubleshooting</a></li>
+      <li class="nav-item mb-4"><a href="{{ path('troubleshooting_index') }}" class="nav-link text-white">Troubleshooting</a></li>
       <li class="nav-item mb-4"><a href="#" class="nav-link text-white">Devices</a></li>
       <li class="nav-item mb-4"><a href="#" class="nav-link text-white">New Flows</a></li>
       <li class="nav-item mb-4"><a href="#" class="nav-link text-white">Admin</a></li>
@@ -48,15 +48,30 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-5 py-3">
   <div class="container-fluid d-flex justify-content-start">
     <ul class="navbar-nav gap-4">
-      <li class="nav-item"><a class="nav-link fw-semibold" href="{{ path('troubleshooting_airmobile') }}">AirMobile</a></li>
-      <a class="nav-link fw-semibold" href="{{ path('troubleshooting_wireless') }}">Wireless</a>
-      <a class="nav-link fw-semibold" href="{{ path('troubleshooting_dsl') }}">DSL</a>
-      <a class="nav-link fw-semibold" href="{{ path('troubleshooting_fibre_orders') }}">Fibre(Orders)</a>
-      <a class="nav-link fw-semibold" href="{{ path('troubleshooting_fibre_technical') }}">Fibre(Technical)</a>
-      <a class="nav-link fw-semibold" href="{{ path('troubleshooting_voip') }}">VoIP</a>
-      <a class="nav-link fw-semibold" href="{{ path('troubleshooting_hosting') }}">Hosting</a>
-      <a class="nav-link fw-semibold" href="{{ path('troubleshooting_accounts') }}">Accounts</a>
-
+        <li class="nav-item">
+            <a class="nav-link fw-semibold" href="{{ path('troubleshooting_product', { product: 'airmobile' }) }}">AirMobile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link fw-semibold" href="{{ path('troubleshooting_product', { product: 'wireless' }) }}">Wireless</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link fw-semibold" href="{{ path('troubleshooting_product', { product: 'dsl' }) }}">DSL</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link fw-semibold" href="{{ path('troubleshooting_product', { product: 'fibre-orders' }) }}">Fibre (Orders)</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link fw-semibold" href="{{ path('troubleshooting_product', { product: 'fibre-technical' }) }}">Fibre (Technical)</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link fw-semibold" href="{{ path('troubleshooting_product', { product: 'voip' }) }}">VoIP</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link fw-semibold" href="{{ path('troubleshooting_product', { product: 'hosting' }) }}">Hosting</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link fw-semibold" href="{{ path('troubleshooting_product', { product: 'accounts' }) }}">Accounts</a>
+        </li>
     </ul>
   </div>
 </nav>

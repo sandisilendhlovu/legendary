@@ -9,14 +9,14 @@
   <p class="text-muted mb-5">Select the correct product below & start troubleshooting </p>
 
   <div class="d-flex flex-wrap justify-content-center gap-3">
-    <a href="{{ path('troubleshooting_airmobile') }}"class="btn btn-outline-danger px-4 py-2">AirMobile</a>
-    <a href="{{ path('troubleshooting_wireless') }}" class="btn btn-outline-danger px-4 py-2">Wireless</a>
-    <a href="{{ path('troubleshooting_dsl') }}" class="btn btn-outline-danger px-4 py-2">DSL</a>
-    <a href="{{ path('troubleshooting_fibre_orders') }}" class="btn btn-outline-danger px-4 py-2">Fibre (Orders)</a>
-    <a href="{{ path('troubleshooting_fibre_technical') }}" class="btn btn-outline-danger px-4 py-2">Fibre (Technical)</a>
-    <a href="{{ path('troubleshooting_voip') }}" class="btn btn-outline-danger px-4 py-2">VoIP</a>
-    <a href="{{ path('troubleshooting_hosting') }}" class="btn btn-outline-danger px-4 py-2">Hosting</a>
-    <a href="{{ path('troubleshooting_accounts') }}" class="btn btn-outline-danger px-4 py-2">Accounts</a>
+    <a href="{{ path('troubleshooting_product', { product: 'airmobile' }) }}" class="btn btn-outline-danger px-4 py-2">AirMobile</a>
+    <a href="{{ path('troubleshooting_product', { product: 'wireless' }) }}" class="btn btn-outline-danger px-4 py-2">Wireless</a>
+    <a href="{{ path('troubleshooting_product', { product: 'dsl' }) }}" class="btn btn-outline-danger px-4 py-2">DSL</a>
+    <a href="{{ path('troubleshooting_product', { product: 'fibre-orders' }) }}" class="btn btn-outline-danger px-4 py-2">Fibre (Orders)</a>
+    <a href="{{ path('troubleshooting_product', { product: 'fibre-technical' }) }}" class="btn btn-outline-danger px-4 py-2">Fibre (Technical)</a>
+    <a href="{{ path('troubleshooting_product', { product: 'voip' }) }}" class="btn btn-outline-danger px-4 py-2">VoIP</a>
+    <a href="{{ path('troubleshooting_product', { product: 'hosting' }) }}" class="btn btn-outline-danger px-4 py-2">Hosting</a>
+    <a href="{{ path('troubleshooting_product', { product: 'accounts' }) }}" class="btn btn-outline-danger px-4 py-2">Accounts</a>
 
   </div>
 
