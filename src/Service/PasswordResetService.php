@@ -22,7 +22,7 @@ class PasswordResetService
      */
     public function validateResetToken(string $selector, string $verifier): ?PasswordResetToken
     {
-        $token = $this->tokenRepository->findOneBy(['selector' => $selector]);
+        $token = $this->tokenRepository->findBySelector($selector);
 
         if (!$token) {
             return null;

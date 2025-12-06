@@ -48,6 +48,9 @@ class PasswordResetRequestService
         $this->entityManager->persist($token);
         $this->entityManager->flush();
 
-        return [$user, $selector, $verifier];
+        return [
+            'user' => $user,
+            'selector' => $selector,
+            'verifier'=> $verifier];
     }
 }
