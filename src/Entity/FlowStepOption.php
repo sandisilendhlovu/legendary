@@ -7,7 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 
  #[ORM\Entity(repositoryClass: FlowStepOptionRepository::class)]
+ #[ORM\HasLifecycleCallbacks]
+
  class FlowStepOption
+
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -32,7 +35,30 @@ use Doctrine\ORM\Mapping as ORM;
     #[ORM\JoinColumn(nullable: true, options: ['comment' => 'The next step triggered when this option is selected'])]
     private ?FlowStep $nextStep = null;
 
-    public function getId(): ?int
+     #[ORM\Column(type: 'datetime_immutable')]
+     private ?\DateTimeImmutable $createdAt = null;
+
+     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+     private ?\DateTimeImmutable $updatedAt = null;
+
+     // === Lifecycle Callbacks ===
+     #[ORM\PrePersist]
+     public function onPrePersist(): void
+     {
+         $now = new \DateTimeImmutable();
+         $this->createdAt = $now;
+         $this->updatedAt = $now;
+     }
+
+     #[ORM\PreUpdate]
+     public function onPreUpdate(): void
+     {
+         $this->updatedAt = new \DateTimeImmutable();
+     }
+
+     // === Getters & Setters ===
+
+     public function getId(): ?int
     {
         return $this->id;
     }
@@ -72,4 +98,14 @@ use Doctrine\ORM\Mapping as ORM;
 
         return $this;
     }
+
+     public function getCreatedAt(): ?\DateTimeImmutable
+     {
+         return $this->createdAt;
+     }
+
+     public function getUpdatedAt(): ?\DateTimeImmutable
+     {
+         return $this->updatedAt;
+     }
 }

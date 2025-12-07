@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Represents a single password reset request.
  * Linked to a User and stores secure reset tokens with expiry and usage timestamps.
  */
-
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: PasswordResetTokenRepository::class)]
 class PasswordResetToken
 {
@@ -120,5 +120,10 @@ class PasswordResetToken
         $this->usedAt = $usedAt;
 
         return $this;
+    }
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
     }
 }

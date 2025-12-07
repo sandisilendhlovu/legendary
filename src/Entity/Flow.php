@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: FlowRepository::class)]
 class Flow
 {
@@ -32,6 +32,13 @@ class Flow
                         )]
                         private ?string $description = null;
 
+    #[ORM\Column(type: 'datetime_immutable')]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+
 // Each Flow must belong to one Product
 #[ORM\ManyToOne(inversedBy: 'flows')]
 #[ORM\JoinColumn(nullable: false, options: ['comment' => 'The product this flow belongs to'])]
@@ -47,6 +54,21 @@ public function __construct()
 {
     $this->flowSteps = new ArrayCollection();
 }
+
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $now = new \DateTimeImmutable();
+        $this->createdAt = $now;
+        $this->updatedAt = $now;
+    }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
 
 
     public function getId(): ?int
@@ -119,4 +141,14 @@ public function __construct()
 
         return $this;
     }
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
 }
