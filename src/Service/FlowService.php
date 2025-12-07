@@ -27,9 +27,7 @@ class FlowService
      */
     public function getFlowStep(Flow $flow, int $stepNumber): ?FlowStep
     {
-        return $this->flowStepRepository->findOneBy([
-            'flow' => $flow,
-            'stepNumber' => $stepNumber,
-        ]);
+        return $this->flowStepRepository->findStep($flow, $stepNumber);
     }
 }
+

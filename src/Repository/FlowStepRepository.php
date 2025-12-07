@@ -15,4 +15,12 @@ class FlowStepRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, FlowStep::class);
     }
+
+    public function findStep(Flow $flow, int $stepNumber): ?FlowStep
+    {
+        return $this->findOneBy([
+            'flow' => $flow,
+            'stepNumber' => $stepNumber,
+        ]);
+    }
 }
