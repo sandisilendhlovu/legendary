@@ -20,9 +20,7 @@ class VerificationService
      */
     public function verifyEmail(string $token): bool
     {
-        $user = $this->userRepository->findOneBy([
-            'verificationToken' => $token,
-        ]);
+        $user = $this->userRepository->findByVerificationToken($token);
 
         if (!$user) {
             return false;
