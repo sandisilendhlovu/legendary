@@ -19,7 +19,7 @@ class ResetPasswordType extends AbstractType
                 'type' => PasswordType::class,
                  'invalid_message' => 'Passwords must match.',
             'mapped' => false,
-            'constraints' => [  
+            'constraints' => [
                 new Assert\NotBlank(['message' => 'Please enter a password']),
                 new Assert\Length([
                     'min' => 8,
@@ -46,9 +46,6 @@ class ResetPasswordType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-       $resolver->setDefaults([
-            'validation_groups' => ['Default'],
-            'constraints' => [new Assert\Valid()],
-        ]);
+        $resolver->setDefaults([]);
     }
 }
