@@ -18,16 +18,12 @@
     style="max-height: 80px; width: auto;">
 </div>
 
-   <form method="post" data-turbo="false">
+   <form method="post" action="{{ path('auth_login') }}" data-turbo="false">
+
     {% if error %}
       <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('auth_logout') }}">Logout</a>
-        </div>
-    {% endif %}
 
    <h1 class="h3 mb-4 font-weight-normal text-center">Login</h1>
    <label for="inputEmail">Afrihost Email Address</label>
