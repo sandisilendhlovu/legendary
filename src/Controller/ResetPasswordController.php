@@ -96,9 +96,15 @@ $this->addFlash('success', sprintf(
                 return $this->redirectToRoute('auth_login');
             }
 
+        $resetAction = $this->generateUrl('auth_reset_password', [
+            'selector' => $selector,
+            'verifier' => $verifier,
+        ]);
+
         // Always render the form
         return $this->render('reset_password/reset_form.html.twig', [
-            'resetForm' => $form->createView(),
+            'resetForm'   => $form->createView(),
+            'resetAction' => $resetAction,
         ]);
     }
 }
