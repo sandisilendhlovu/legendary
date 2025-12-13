@@ -29,5 +29,24 @@ class FlowService
     {
         return $this->flowStepRepository->findStep($flow, $stepNumber);
     }
+
+public function getStepOptionsWithTargets(FlowStep $step): array
+{
+    $options = [];
+
+    foreach ($step->getFlowStepOptions() as $option) {
+        $options[] = [
+            'label' => $option->getLabel(),
+            'targetStepNumber' =>
+                $option->getNextStep()
+                    ? $option->getNextStep()->getStepNumber()
+                    : $step->getStepNumber() + 1,
+        ];
+    }
+
+    return $options;
+}
+
+
 }
 

@@ -22,17 +22,13 @@
             <h5>Choose an option:</h5>
 
             {% for option in options %}
-                {% if option.nextStep %}
-                    <a href="{{ path('flow_view', { flow_id: flow.id, step: option.nextStep.stepNumber }) }}"
-                       class="btn btn-outline-danger m-1">
+            <a href="{{ path('flow_view', {
+                flow_id: flow.id,
+                step: option.targetStepNumber
+            }) }}"
+               class="btn btn-outline-danger m-1">
                         {{ option.label }}
                     </a>
-                {% else %}
-                    <a href="{{ path('flow_view', { flow_id: flow.id, step: step.stepNumber + 1 }) }}"
-                       class="btn btn-outline-danger m-1">
-                        {{ option.label }}
-                    </a>
-                {% endif %}
             {% endfor %}
         </div>
     {% else %}
@@ -43,7 +39,7 @@
     <div class="mt-4 d-flex gap-3 justify-content-center">
 
         <!-- Start Over: go back to Fibre Technical issue selection -->
-        <a href="{{ path('troubleshooting_fibre_technical') }}"
+        <a href="{{ path('troubleshooting_product', { product: 'fibre-technical' }) }}"
            class="btn btn-primary px-4 py-2">
             Start Over
         </a>

@@ -39,7 +39,7 @@ class FlowController extends AbstractController
         return $this->render('flow/view.html.twig', [
             'flow' => $flow,
             'step' => $currentStep,
-            'options' => $currentStep->getFlowStepOptions(),
+            'options' => $this->flowService->getStepOptionsWithTargets($currentStep),
         ]);
     }
 }
