@@ -32,7 +32,7 @@ class PasswordResetToken
     private ?string $verifierHash = null;
 
     // Timestamp when token was created
-    #[ORM\Column(type: 'datetime_immutable', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[ORM\Column(type: 'datetime_immutable')]
     private ?\DateTimeImmutable $createdAt = null;
 
     // Expiration time (+1 hour from creation)
