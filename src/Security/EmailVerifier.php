@@ -28,7 +28,7 @@ class EmailVerifier
 
         // Build the email
         $email = (new Email())
-            ->from(new Address('noreply@sandycodes.co.za', 'Legendary Login System'))
+            ->from(new Address('noreply@sandycodes.co.za', 'Legendhub Login System'))
             ->to($user->getEmail())
             ->subject('Please verify your email address')
             ->html("<p>Hi {$user->getFirstName()},</p>

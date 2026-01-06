@@ -26,7 +26,7 @@ class MailerService
         $email = (new Email())
             ->from('noreply@sandycodes.co.za')
             ->to($user->getEmail())
-            ->subject('Legendary | Password Reset Request')
+            ->subject('Legendhub | Password Reset Request')
             ->html($html);
 
         $this->mailer->send($email);
@@ -43,9 +43,9 @@ class MailerService
         ]);
 
         $email = (new Email())
-            ->from('Legendary <noreply@sandycodes.co.za>')
+            ->from('Legendhub <noreply@sandycodes.co.za>')
             ->to($user->getEmail())
-            ->subject('Legendary | Verify Your Email Address')
+            ->subject('Legendhub | Verify Your Email Address')
             ->html($html);
 
         $this->mailer->send($email);
