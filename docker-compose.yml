@@ -1,11 +1,11 @@
-version: "3.9"
+
 
 services:
   php:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
-    container_name: legendary-php
+    container_name: legendhub-php
     volumes:
       - .:/var/www/html
     depends_on:
@@ -13,7 +13,7 @@ services:
 
   nginx:
     image: nginx:1.27
-    container_name: legendary-nginx
+    container_name: legendhub-nginx
     ports:
       - "8080:80"
     volumes:
@@ -24,16 +24,16 @@ services:
 
   db:
     image: mysql:8.0
-    container_name: legendary-db
+    container_name: legendhub-db
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: legendary
-      MYSQL_USER: legendary_user
-      MYSQL_PASSWORD: legendary_pass
+      MYSQL_DATABASE: legendhub
+      MYSQL_USER: legendhub_user
+      MYSQL_PASSWORD: legendhub_pass
     ports:
       - "3307:3306"
     volumes:
-      - legendary-db-data:/var/lib/mysql
+      - legendhub-db-data:/var/lib/mysql
 
 volumes:
-  legendary-db-data:
+  legendhub-db-data:
