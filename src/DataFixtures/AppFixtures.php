@@ -25,12 +25,22 @@ class AppFixtures extends Fixture
             "• Recheck the ONT lights.\n" .
             "• Test connectivity again.";
 
+        // define title variable + check if Slow Access flow already exists
+        $fibreSlowAccessTitle = 'Fibre — Slow Internet Access';
+        $fibreSlowAccessFlow = $manager
+            ->getRepository(Flow::class)
+            ->findOneBy(['title' => $fibreSlowAccessTitle]);
+
+        // only create the flow + steps if it does NOT already exist
+        if (!$fibreSlowAccessFlow) {
+
+
         //
         // CREATE FLOW — Fibre: Slow Internet Access
         //
 
         $fibreSlowAccessFlow = new Flow();
-        $fibreSlowAccessFlow->setTitle('Fibre — Slow Internet Access');
+        $fibreSlowAccessFlow->setTitle($fibreSlowAccessTitle);
         $fibreSlowAccessFlow->setDescription('A guided troubleshooting flow for slow speeds on fibre connections.');
         $manager->persist($fibreSlowAccessFlow);
 
@@ -161,13 +171,24 @@ class AppFixtures extends Fixture
         );
         $manager->persist($step8);
 
+        }
+
+        // define title variable + check if Intermittent flow already exists
+        $fibreIntermittentTitle = 'Fibre — Intermittent Connection';
+        $fibreIntermittentFlow = $manager
+            ->getRepository(Flow::class)
+            ->findOneBy(['title' => $fibreIntermittentTitle]);
+
+        // only create the flow + steps if it does NOT already exist
+        if (!$fibreIntermittentFlow) {
+
 
         //
         // CREATE FLOW — Fibre: Intermittent Connection
         //
 
         $fibreIntermittentFlow = new Flow();
-        $fibreIntermittentFlow->setTitle('Fibre — Intermittent Connection');
+        $fibreIntermittentFlow->setTitle($fibreIntermittentTitle);
         $fibreIntermittentFlow->setDescription('A guided troubleshooting flow for intermittent fibre connectivity.');
         $manager->persist($fibreIntermittentFlow);
 
@@ -295,13 +316,13 @@ class AppFixtures extends Fixture
             "  - 5 GHz: Channels 36, 40, 44, 48"
         );
         $manager->persist($iStep9);
+        }
 
-        //
         // Save everything
-        //
         $manager->flush();
     }
 }
+
 
 
 
