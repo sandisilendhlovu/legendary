@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Flow;
 use App\Entity\FlowStep;
+use App\Entity\Product;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -11,6 +12,18 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+        $fibreProduct = $manager
+            ->getRepository(Product::class)
+            ->findOneBy(['name' => 'Fibre']);
+
+        if (!$fibreProduct) {
+            throw new \RuntimeException(
+                'Product "Fibre" not found. Please ensure the Fibre product exists before loading fixtures.'
+            );
+        }
+
+        $now = new \DateTimeImmutable();
+
         // Shared step content (reused across flows)
         $physicalCheckContent =
             "Perform physical checks and reboot devices.\n\n" .
@@ -42,6 +55,9 @@ class AppFixtures extends Fixture
         $fibreSlowAccessFlow = new Flow();
         $fibreSlowAccessFlow->setTitle($fibreSlowAccessTitle);
         $fibreSlowAccessFlow->setDescription('A guided troubleshooting flow for slow speeds on fibre connections.');
+
+        $fibreSlowAccessFlow->setProduct($fibreProduct);
+
         $manager->persist($fibreSlowAccessFlow);
 
 
@@ -52,6 +68,9 @@ class AppFixtures extends Fixture
         $step1 = new FlowStep();
         $step1->setFlow($fibreSlowAccessFlow);
         $step1->setStepNumber(1);
+
+        $step1->setTitle('Check for outages');
+
         $step1->setContent(
             "Check if the client is not affected by any outages.\n\n" .
             "• Check the Afrihost Network Status page or the FNO portal (where applicable) to confirm no open or ongoing outages exist in the client's area.\n"
@@ -64,6 +83,10 @@ class AppFixtures extends Fixture
         $step2 = new FlowStep();
         $step2->setFlow($fibreSlowAccessFlow);
         $step2->setStepNumber(2);
+
+        $step2->setTitle('Physical checks + reboot');
+
+
         $step2->setContent($physicalCheckContent);
         $manager->persist($step2);
 
@@ -75,6 +98,9 @@ class AppFixtures extends Fixture
         $step3 = new FlowStep();
         $step3->setFlow($fibreSlowAccessFlow);
         $step3->setStepNumber(3);
+
+        $step3->setTitle('Verify speed profile');
+
         $step3->setContent(
             "Verify the client's package and speed profile.\n\n" .
             "• Confirm the subscribed speed in Mojo.\n" .
@@ -91,6 +117,9 @@ class AppFixtures extends Fixture
         $step4 = new FlowStep();
         $step4->setFlow($fibreSlowAccessFlow);
         $step4->setStepNumber(4);
+
+         $step4->setTitle('Check LAN hardware capability');
+
         $step4->setContent(
             "Verify the client's computer and LAN cable can support the subscribed speed.\n\n" .
             "• If a client is subscribed to a 100Mbps line or higher, confirm the PC's Ethernet NIC is 1Gbps capable.\n" .
@@ -106,6 +135,9 @@ class AppFixtures extends Fixture
         $step5 = new FlowStep();
         $step5->setFlow($fibreSlowAccessFlow);
         $step5->setStepNumber(5);
+
+        $step5->setTitle('Test directly on ONT');
+
         $step5->setContent(
             "Test the client's speeds while connected directly to the ONT.\n\n" .
             "• Have the client bypass the router & connect their PC directly to the ONT via LAN.\n" .
@@ -123,6 +155,9 @@ class AppFixtures extends Fixture
         $step6 = new FlowStep();
         $step6->setFlow($fibreSlowAccessFlow);
         $step6->setStepNumber(6);
+
+        $step6->setTitle('Controlled router test');
+
         $step6->setContent(
             "Reconnect the router and perform a controlled LAN test.\n\n" .
             "• Disable the Wi-Fi network.\n" .
@@ -141,6 +176,9 @@ class AppFixtures extends Fixture
         $step7 = new FlowStep();
         $step7->setFlow($fibreSlowAccessFlow);
         $step7->setStepNumber(7);
+
+         $step7->setTitle('Improve Wi-Fi performance');
+
         $step7->setContent(
             "Improve wireless performance by adjusting Wi-Fi channel settings.\n\n" .
             "• Log into the router interface.\n" .
@@ -160,6 +198,9 @@ class AppFixtures extends Fixture
         $step8 = new FlowStep();
         $step8->setFlow($fibreSlowAccessFlow);
         $step8->setStepNumber(8);
+
+        $step8->setTitle('Escalation evidence (if slow on ONT)');
+
         $step8->setContent(
             "If speeds are slow even when connected directly to the ONT, this indicates a provider/FNO/line issue.\n\n" .
             "Collect the following before logging a fault:\n" .
@@ -169,9 +210,10 @@ class AppFixtures extends Fixture
             "Note: Some FNOs have additional requirements (e.g., Frogfoot speed test results must be submitted together with a screenshot of the laptop's Task Manager, showing the CPU usage at the exact time the speed test was conducted).\n\n" .
             "Once collected, log an informative and detailed fault with the provider."
         );
-        $manager->persist($step8);
+            $manager->persist($step8);
 
         }
+
 
         // define title variable + check if Intermittent flow already exists
         $fibreIntermittentTitle = 'Fibre — Intermittent Connection';
@@ -190,6 +232,9 @@ class AppFixtures extends Fixture
         $fibreIntermittentFlow = new Flow();
         $fibreIntermittentFlow->setTitle($fibreIntermittentTitle);
         $fibreIntermittentFlow->setDescription('A guided troubleshooting flow for intermittent fibre connectivity.');
+
+        $fibreIntermittentFlow->setProduct($fibreProduct);
+
         $manager->persist($fibreIntermittentFlow);
 
         //
@@ -198,6 +243,9 @@ class AppFixtures extends Fixture
         $iStep1 = new FlowStep();
         $iStep1->setFlow($fibreIntermittentFlow);
         $iStep1->setStepNumber(1);
+
+            $iStep1->setTitle('Check for outages');
+
         $iStep1->setContent(
             "Verify the client is not affected by any area outages.\n\n" .
             "• Check Afrihost Network Status and/or the relevant FNO portal for open incidents in the client's area."
@@ -210,6 +258,10 @@ class AppFixtures extends Fixture
         $iStep2 = new FlowStep();
         $iStep2->setFlow($fibreIntermittentFlow);
         $iStep2->setStepNumber(2);
+
+            $iStep2->setTitle('Physical checks + reboot');
+
+
         $iStep2->setContent($physicalCheckContent);
         $manager->persist($iStep2);
 
@@ -219,6 +271,9 @@ class AppFixtures extends Fixture
         $iStep3 = new FlowStep();
         $iStep3->setFlow($fibreIntermittentFlow);
         $iStep3->setStepNumber(3);
+
+            $iStep3->setTitle('Identify the intermittency pattern');
+
         $iStep3->setContent(
             "Probe the client to understand the intermittency pattern.\n\n" .
             "Ask:\n" .
@@ -234,6 +289,9 @@ class AppFixtures extends Fixture
         $iStep4 = new FlowStep();
         $iStep4->setFlow($fibreIntermittentFlow);
         $iStep4->setStepNumber(4);
+
+            $iStep4->setTitle('Run targeted tests');
+
         $iStep4->setContent(
             "Run targeted tests based on what you learned.\n\n" .
             "• If the drops happen at specific times, run ping tests during that window and record timestamps.\n" .
@@ -248,6 +306,10 @@ class AppFixtures extends Fixture
         $iStep5 = new FlowStep();
         $iStep5->setFlow($fibreIntermittentFlow);
         $iStep5->setStepNumber(5);
+
+            $iStep5->setTitle('Isolate router vs line');
+
+
         $iStep5->setContent(
             "Isolate whether the issue is on the router side or line/FNO side.\n\n" .
             "• Test the connection stability directly on the ONT (LAN) and then again via the router.\n" .
@@ -261,6 +323,10 @@ class AppFixtures extends Fixture
         $iStep6 = new FlowStep();
         $iStep6->setFlow($fibreIntermittentFlow);
         $iStep6->setStepNumber(6);
+
+            $iStep6->setTitle('Packet loss check (gateway ping)');
+
+
         $iStep6->setContent(
             "Check for packet loss to the default gateway.\n\n" .
             "1) Have the client run: ipconfig /all\n" .
@@ -277,6 +343,10 @@ class AppFixtures extends Fixture
         $iStep7 = new FlowStep();
         $iStep7->setFlow($fibreIntermittentFlow);
         $iStep7->setStepNumber(7);
+
+            $iStep7->setTitle('Traceroute to locate loss');
+
+
         $iStep7->setContent(
             "If there is no packet loss to the gateway, test beyond the gateway.\n\n" .
             "• Run a traceroute to a specific site.\n" .
@@ -293,6 +363,9 @@ class AppFixtures extends Fixture
         $iStep8 = new FlowStep();
         $iStep8->setFlow($fibreIntermittentFlow);
         $iStep8->setStepNumber(8);
+
+            $iStep8->setTitle('Supporting evidence during drops');
+
         $iStep8->setContent(
             "Run supporting tests during the drops (especially if speed also deteriorates).\n\n" .
             "• Traceroute to a local server.\n" .
@@ -308,6 +381,10 @@ class AppFixtures extends Fixture
         $iStep9 = new FlowStep();
         $iStep9->setFlow($fibreIntermittentFlow);
         $iStep9->setStepNumber(9);
+
+            $iStep9->setTitle('Router Wi-Fi health checks');
+
+
         $iStep9->setContent(
             "If the connection is stable on the ONT but unstable on Wi-Fi, focus on router Wi-Fi health.\n\n" .
             "• Check if the router firmware is up to date; update if required.\n" .
@@ -315,8 +392,10 @@ class AppFixtures extends Fixture
             "  - 2.4 GHz: Channels 1, 6, 11\n" .
             "  - 5 GHz: Channels 36, 40, 44, 48"
         );
-        $manager->persist($iStep9);
+            $manager->persist($iStep9);
+
         }
+
 
         // Save everything
         $manager->flush();
