@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -22,47 +23,70 @@ class RegistrationFormType extends AbstractType
            // First Name
             ->add('firstName', TextType::class, [
             'label' => 'Name',
-            'attr' => ['autocomplete' => 'given-name'],
+               'attr' => [
+                   'autocomplete' => 'given-name',
+                   'placeholder' => 'Your name',
+                   'class' => 'form-control',
+               ],
             'constraints' => [
               new NotBlank ([
                 'message' => 'Please enter your first name.',
               ]),
             ],
         ])
-          
-           // Last Name  
+
+           // Last Name
             ->add('lastName', TextType::class, [
               'label' => 'Surname',
-              'attr' => ['autocomplete' => 'family-name'],
+               'attr' => [
+                   'autocomplete' => 'family-name',
+                   'placeholder' => 'Your last name',
+                   'class' => 'form-control',
+               ],
               'constraints' => [
                 new NotBlank([
                     'message' => 'Please enter your surname.',
-                ]), 
+                ]),
             ],
-          
+
         ])
              // Email
             ->add('email', EmailType::class, [
                 'label' => 'Afrihost Email Address',
-                'attr' => ['autocomplete' => 'username'],
+                 'attr' => [
+                     'autocomplete' => 'username',
+                     'placeholder' => 'yourusername@afrihost.com',
+                     'class' => 'form-control',
+                 ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter your Afrihost email address.'
-                        
+
+                    ]),
+
+                    new Email([
+                        'message' => 'Please enter a valid email address.',
+
                     ]),
                 ],
             ])
+
+
                  // Password
                ->add('plainPassword', PasswordType::class, [
                 'label' => 'Password',
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
+                     'attr' => [
+                         'autocomplete' => 'new-password',
+                         'placeholder' => 'Create a password',
+                         'class' => 'form-control',
+                     ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password.',
                     ]),
                     new Length([
-                        'min' => 6,
+                        'min' => 8,
                         'minMessage' =>'Your password must be at least {{ limit }} characters long.',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,

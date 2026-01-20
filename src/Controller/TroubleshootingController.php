@@ -5,61 +5,41 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_USER')]
 class TroubleshootingController extends AbstractController
 {
-    #[Route('/troubleshooting', name: 'app_troubleshooting')]
+    #[Route('/troubleshooting', name: 'troubleshooting_index', methods: ['GET'])]
     public function index(): Response
     {
         return $this->render('troubleshooting/index.html.twig');
     }
 
-    #[Route('/troubleshooting/airmobile', name: 'app_troubleshooting_airmobile')]
-    public function airmobile(): Response
+    #[Route('/troubleshooting/{product}', name: 'troubleshooting_product', methods: ['GET'])]
+    public function product(string $product): Response
     {
-        return $this->render('troubleshooting/airmobile.html.twig');
-    }
+        // Allowed troubleshooting products — whitelist for safety (prevents loading invalid templates)
+        $allowedProducts = [
+            'airmobile',
+            'wireless',
+            'dsl',
+            'fibre-orders',
+            'fibre-technical',
+            'voip',
+            'hosting',
+            'accounts',
+        ];
 
-    #[Route('/troubleshooting/wireless', name: 'app_troubleshooting_wireless')]
-    public function wireless(): Response
-    {
-    return $this->render('troubleshooting/wireless.html.twig');
-    }
+        // Validate the product slug (URL-friendly name used in the route - must match one of the allowed categories)
+        if (!in_array($product, $allowedProducts, true)) {
+            throw $this->createNotFoundException('Troubleshooting category not found.');
+        }
 
-    #[Route('/troubleshooting/dsl', name: 'app_troubleshooting_dsl')]
-     public function dsl(): Response
-    {
-    return $this->render('troubleshooting/dsl.html.twig');
-    }
+        // Convert slug to matching template name (hyphens become underscores)
+        $templateName = str_replace('-', '_', $product);
 
-    #[Route('/troubleshooting/fibre-orders', name: 'app_troubleshooting_fibre_orders')]
-    public function fibreOrders(): Response
-    {
-    return $this->render('troubleshooting/fibre_orders.html.twig');
-    }
-
-    #[Route('/troubleshooting/fibre-technical', name: 'app_troubleshooting_fibre_technical')]
-    public function fibreTechnical(): Response
-   {
-    return $this->render('troubleshooting/fibre_technical.html.twig');
-   }
-
-   #[Route('/troubleshooting/voip', name: 'app_troubleshooting_voip')]
-    public function voip(): Response
-   {
-    return $this->render('troubleshooting/voip.html.twig');
-   }
-
-   #[Route('/troubleshooting/hosting', name: 'app_troubleshooting_hosting')]
-   public function hosting(): Response
-   {
-    return $this->render('troubleshooting/hosting.html.twig');
-   }
-
-   #[Route('/troubleshooting/accounts', name: 'app_troubleshooting_accounts')]
-   public function accounts(): Response
-  {
-    return $this->render('troubleshooting/accounts.html.twig');
+    return $this->render(sprintf('troubleshooting/%s.html.twig', $templateName));
   }
 
 

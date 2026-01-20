@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ flow.title }}{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+
+    <h1 class="mb-3">{{ flow.title }}</h1>
+    <p class="text-muted">{{ flow.description }}</p>
+
+    <hr class="my-4">
+
+    <h4 class="mt-4">
+        {{ step.stepNumber }}. {{ step.title }}
+    </h4>
+
+    <p>{{ step.content|raw }}</p>
+
+
+    {% if options is not empty %}
+        <div class="mt-4">
+            <h5>Choose an option:</h5>
+
+            {% for option in options %}
+            <a href="{{ path('flow_view', {
+                flow_id: flow.id,
+                step: option.targetStepNumber
+            }) }}"
+               class="btn btn-outline-danger m-1">
+                        {{ option.label }}
+                    </a>
+            {% endfor %}
+        </div>
+    {% else %}
+    <div class="alert alert-info mt-4">
+        No further steps. End of flow.
+    </div>
+
+    <div class="mt-4 d-flex gap-3 justify-content-center">
+
+        <!-- Start Over: go back to Fibre Technical issue selection -->
+        <a href="{{ path('troubleshooting_product', { product: 'fibre-technical' }) }}"
+           class="btn btn-primary px-4 py-2">
+            Start Over
+        </a>
+
+        <!-- Exit Flow: go back to main homepage -->
+        <a href="{{ path('home') }}"
+           class="btn btn-outline-secondary px-4 py-2">
+            Exit Flow
+        </a>
+
+    </div>
+{% endif %}
+</div>
+{% endblock %}

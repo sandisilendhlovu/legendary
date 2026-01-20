@@ -10,14 +10,14 @@ security:
       entity:
         class: App\Entity\User
         property: email
-   
+
   # Firewall configuration
   firewalls:
   # Disable security for dev tools and assets
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
-   
+
    # Main authentication firewall
     main:
       lazy: true
@@ -26,8 +26,8 @@ security:
       user_checker: App\Security\UserChecker
 
       logout:
-        path: app_logout
-        target: app_login
+        path: auth_logout
+        target: auth_login
 
       remember_me:
         secret: '%kernel.secret%'
@@ -35,9 +35,15 @@ security:
         path: /
         always_remember_me: false
 
- # Add access rules later for admin/editor roles
-  access_control: []
-    
+  # Add access rules later for admin/editor roles
+  access_control:
+    - { path: ^/login, roles: PUBLIC_ACCESS }
+    - { path: ^/register, roles: PUBLIC_ACCESS }
+    - { path: ^/verify/email, roles: PUBLIC_ACCESS }
+    - { path: ^/forgot-password, roles: PUBLIC_ACCESS }
+    - { path: ^/reset/password, roles: PUBLIC_ACCESS }
+    - { path: ^/, roles: ROLE_USER }
+
 
 when@test:
   security:
@@ -47,4 +53,3 @@ when@test:
         cost: 4
         time_cost: 3
         memory_cost: 10
-

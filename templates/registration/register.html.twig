@@ -17,9 +17,9 @@
     <div class="card-body p-4">
 
 <div class="text-center mb-4">
-  <img 
-    src="{{ asset('images/legendary-logo.png') }}" 
-    alt="Legendary Logo" 
+  <img
+    src="{{ asset('images/legendhub-logo.png') }}"
+    alt="Legendhub Logo"
     class="img-fluid mx-auto d-block"
     style="max-height: 80px; width: auto;">
 </div>
@@ -33,12 +33,7 @@
 
     {{ form_row(registrationForm.firstName) }}
     {{ form_row(registrationForm.lastName) }}
-<div class="mb-3">
-    {{ form_label(registrationForm.email) }}
-    {{ form_widget(registrationForm.email) }}
-    {{ form_errors(registrationForm.email) }}
-</div>
-
+        {{ form_row(registrationForm.email) }}
     {{ form_row(registrationForm.plainPassword, {
             label: 'Password' }) }}
 
