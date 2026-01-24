@@ -110,20 +110,6 @@ class AppFixtures extends Fixture
             );
             $manager->persist($step3);
 
-            // Options for STEP 2 — Physical checks + reboot
-            $opt2a = new FlowStepOption();
-            $opt2a->setLabel('Issue resolved / speeds improved');
-            $opt2a->setCurrentStep($step2);
-            $opt2a->setNextStep(null); // end flow
-            $manager->persist($opt2a);
-
-            $opt2b = new FlowStepOption();
-            $opt2b->setLabel('Still slow');
-            $opt2b->setCurrentStep($step2);
-            $opt2b->setNextStep($step3); // go to Step 3
-            $manager->persist($opt2b);
-
-
             //
             // STEP 4 — Check NIC speed negotiation + LAN cable
             //
@@ -224,21 +210,112 @@ class AppFixtures extends Fixture
                 "Note: Some FNOs have additional requirements (e.g., Frogfoot speed test results must be submitted together with a screenshot of the laptop's Task Manager, showing the CPU usage at the exact time the speed test was conducted).\n\n" .
                 "Once collected, log an informative and detailed fault with the provider."
             );
+
             $manager->persist($step8);
 
-            // Options for STEP 5 — Test directly on ONT
+            $manager->flush();
+
+            // Fibre Slow Access decision tree
+            // STEP 1 — Outage?
+
+            $opt1a = new FlowStepOption();
+            $opt1a->setLabel('Outage found in area');
+            $opt1a->setCurrentStep($step1);
+            $opt1a->setNextStep(null);
+            $manager->persist($opt1a);
+
+            $opt1b = new FlowStepOption();
+            $opt1b->setLabel('No outage / clear');
+            $opt1b->setCurrentStep($step1);
+            $opt1b->setNextStep($step2);
+            $manager->persist($opt1b);
+
+        // STEP 2
+            $opt2a = new FlowStepOption();
+            $opt2a->setLabel('Issue resolved / speeds improved');
+            $opt2a->setCurrentStep($step2);
+            $opt2a->setNextStep(null);
+            $manager->persist($opt2a);
+
+            $opt2b = new FlowStepOption();
+            $opt2b->setLabel('Still slow');
+            $opt2b->setCurrentStep($step2);
+            $opt2b->setNextStep($step3);
+            $manager->persist($opt2b);
+
+        // STEP 3 — Speed profile correct?
+            $opt3a = new FlowStepOption();
+            $opt3a->setLabel('Speed profile correct');
+            $opt3a->setCurrentStep($step3);
+            $opt3a->setNextStep($step4);
+            $manager->persist($opt3a);
+
+            $opt3b = new FlowStepOption();
+            $opt3b->setLabel('Speed profile mismatch (fix / escalate)');
+            $opt3b->setCurrentStep($step3);
+            $opt3b->setNextStep(null);
+            $manager->persist($opt3b);
+
+        // STEP 4 — LAN hardware ok?
+            $opt4a = new FlowStepOption();
+            $opt4a->setLabel('LAN hardware ok');
+            $opt4a->setCurrentStep($step4);
+            $opt4a->setNextStep($step5);
+            $manager->persist($opt4a);
+
+            $opt4b = new FlowStepOption();
+            $opt4b->setLabel('LAN limitation found (fix cable/NIC)');
+            $opt4b->setCurrentStep($step4);
+            $opt4b->setNextStep(null);
+            $manager->persist($opt4b);
+
+        // STEP 5
             $opt5a = new FlowStepOption();
             $opt5a->setLabel('Speeds correct on ONT');
             $opt5a->setCurrentStep($step5);
-            $opt5a->setNextStep($step6); // router test
+            $opt5a->setNextStep($step6);
             $manager->persist($opt5a);
 
             $opt5b = new FlowStepOption();
             $opt5b->setLabel('Still slow on ONT');
             $opt5b->setCurrentStep($step5);
-            $opt5b->setNextStep($step8); // gather evidence + log fault
+            $opt5b->setNextStep($step8);
             $manager->persist($opt5b);
 
+        // STEP 6 — Router controlled test result
+            $opt6a = new FlowStepOption();
+            $opt6a->setLabel('Speeds now correct');
+            $opt6a->setCurrentStep($step6);
+            $opt6a->setNextStep(null);
+            $manager->persist($opt6a);
+
+            $opt6b = new FlowStepOption();
+            $opt6b->setLabel('Still slow via router');
+            $opt6b->setCurrentStep($step6);
+            $opt6b->setNextStep($step7);
+            $manager->persist($opt6b);
+
+        // STEP 7 — Wi-Fi improvement result
+            $opt7a = new FlowStepOption();
+            $opt7a->setLabel('Wi-Fi improved / resolved');
+            $opt7a->setCurrentStep($step7);
+            $opt7a->setNextStep(null);
+            $manager->persist($opt7a);
+
+            $opt7b = new FlowStepOption();
+            $opt7b->setLabel('Still slow');
+            $opt7b->setCurrentStep($step7);
+            $opt7b->setNextStep($step8);
+            $manager->persist($opt7b);
+
+        // STEP 8 — Escalation done
+            $opt8a = new FlowStepOption();
+            $opt8a->setLabel('Evidence captured — log fault / escalate');
+            $opt8a->setCurrentStep($step8);
+            $opt8a->setNextStep(null);
+            $manager->persist($opt8a);
+
+            $manager->flush();
 
         }
 
