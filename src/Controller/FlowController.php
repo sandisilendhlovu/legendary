@@ -17,15 +17,15 @@ class FlowController extends AbstractController
     #[Route('/flow/{flow_id}/{step}', name: 'flow_view', methods: ['GET'], requirements: ['flow_id' => '\d+', 'step' => '\d+'], defaults: ['step' => 1])]
     public function view(int $flow_id, int $step): Response
     {
-      // Get the flow
+        // Get the flow
         $flow = $this->flowService->getFlow($flow_id);
 
         if (!$flow) {
             throw $this->createNotFoundException('Flow not found.');
         }
 
-       // Get the current step
-       $currentStep = $this->flowService->getFlowStep($flow, $step);
+        // Get the current step
+        $currentStep = $this->flowService->getFlowStep($flow, $step);
 
 
         // If no step exists → flow is complete
@@ -39,7 +39,22 @@ class FlowController extends AbstractController
         return $this->render('flow/view.html.twig', [
             'flow' => $flow,
             'step' => $currentStep,
-            'options' => $this->flowService->getStepOptionsWithTargets($currentStep),
+            'options' => $currentStep->getFlowStepOptions(),
+        ]);
+
+    }
+
+        #[Route('/flow/{flow_id}/complete', name: 'flow_complete', methods: ['GET'], requirements: ['flow_id' => '\d+'])]
+       public function complete(int $flow_id): Response
+    {
+        $flow = $this->flowService->getFlow($flow_id);
+
+        if (!$flow) {
+            throw $this->createNotFoundException('Flow not found.');
+        }
+
+        return $this->render('flow/complete.html.twig', [
+            'flow' => $flow,
         ]);
     }
 }

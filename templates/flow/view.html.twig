@@ -22,19 +22,24 @@
             <h5>Choose an option:</h5>
 
             {% for option in options %}
+                {% if option.nextStep %}
             <a href="{{ path('flow_view', {
                 flow_id: flow.id,
-                step: option.targetStepNumber
+                step: option.nextStep.stepNumber
             }) }}"
                class="btn btn-outline-danger m-1">
                         {{ option.label }}
                     </a>
+                {% else %}
+                    {# END FLOW option (nextStep is null) #}
+                    <a href="{{ path('flow_complete', { flow_id: flow.id }) }}"
+                       class="btn btn-outline-secondary m-1">
+                        {{ option.label }}
+                    </a>
+                {% endif %}
             {% endfor %}
         </div>
     {% else %}
-    <div class="alert alert-info mt-4">
-        No further steps. End of flow.
-    </div>
 
     <div class="mt-4 d-flex gap-3 justify-content-center">
 
