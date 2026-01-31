@@ -13,15 +13,12 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $fibreProduct = $manager
-            ->getRepository(Product::class)
-            ->findOneBy(['name' => 'Fibre']);
+        // Core product used by troubleshooting flows
+        $fibreProduct = new Product();
+        $fibreProduct->setName('Fibre');
 
-        if (!$fibreProduct) {
-            throw new \RuntimeException(
-                'Product "Fibre" not found. Please ensure the Fibre product exists before loading fixtures.'
-            );
-        }
+        $manager->persist($fibreProduct);
+        $manager->flush();
 
         $now = new \DateTimeImmutable();
 
