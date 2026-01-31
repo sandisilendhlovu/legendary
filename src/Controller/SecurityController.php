@@ -19,8 +19,8 @@ class SecurityController extends AbstractController
 
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
-             'error' => $error,
-            ]);
+            'error' => $error,
+        ]);
     }
 
     #[Route(path: '/logout', name: 'auth_logout', methods: ['GET'])]
@@ -30,9 +30,16 @@ class SecurityController extends AbstractController
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
-   #[Route('/verify-notice', name: 'auth_verify_notice',methods: ['GET'])]
+    #[Route('/verify-notice', name: 'auth_verify_notice', methods: ['GET'])]
     public function verifyNotice(): Response
     {
-        return $this->render('security/verify_notice.html.twig');
+        $user = $this->getUser();
+
+        // If the user is already verified, they should not stay on this page
+        if ($user && $user->isVerified()) {
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->render('registration/verify_notice.html.twig');
     }
 }
